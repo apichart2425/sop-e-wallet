@@ -1,5 +1,5 @@
 # E-Wallet
-บริการ E-Wallet ที่ช่วยในการแลกเปลี่ยนสกุลเงินต่างๆ ได้สะดวกยิ่งขึ้น
+บริการ E-Wallet ที่ช่วยในการแลกเปลี่ยนสกุลเงินต่างๆ ได้สะดวกยิ่งขึ้น โดยไม่จำเป็นต้องแลกไว้ล่วงหน้า
 
 # Architecture
 
@@ -17,6 +17,7 @@
 - Withdraw money to external provider
 - Transfer money to another wallet
 - Exchange money with in wallet
+- Payment
 
 ## Account Service
 - Get current wallet balance
@@ -56,5 +57,5 @@ Remark : sample request and response coming soon
 
 |ไทธนา อยู่มี|พขร ศรียอดเวียง|วิพุธ ภู่ทอง|อภิชาติ ชัยณรงค์ฤทธิ์|
 | :-: | :-: | :-: | :-: |
-|60070029 |      60070057      |      60070090      | 60070111|
+|60070029|60070057|60070090|60070111|
 |    [@ttaitana](https://github.com/ttaitana)    |     [@boomNDS](https://github.com/boomNDS)     |     [@wiput1999](https://github.com/wiput1999)     | [@apichart2425](https://github.com/apichart2425) |
