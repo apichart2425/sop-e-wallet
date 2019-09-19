@@ -1,6 +1,5 @@
 # E-Wallet
-
-Project of Service-oriented Programming
+บริการ E-Wallet ที่ช่วยในการแลกเปลี่ยนสกุลเงินต่างๆ ได้สะดวกยิ่งขึ้น
 
 # Architecture
 
@@ -34,21 +33,27 @@ Project of Service-oriented Programming
 # API Endpoints
 
 ## Transactional Service
-- `/service/transaction/deposit`
-- `/service/transaction/withdraw`
-- `/service/transaction/exahange`
-- `/service/transaction/transfer`
+- `/services/transaction/deposit`
+- `/services/transaction/withdraw`
+- `/services/transaction/exahange`
+- `/services/transaction/transfer`
 
 ## Account Service
-- `/service/account`
+- `/services/account`
 
 ## Authentication Service
-- `/service/auth/register`
-- `/service/auth/login`
-- `/service/auth/logout`
-- `/service/auth/me`
+- `/services/auth/register`
+- `/services/auth/login`
+- `/services/auth/logout`
+- `/services/auth/me`
 
 ## Currency Exchange Service
-- `/service/exchange`
+- `/services/exchange`
 
 Remark : sample request and response coming soon
+
+# Team Member
+
+|ไทธนา อยู่มี|พขร ศรียอดเวียง|วิพุธ ภู่ทอง|อภิชาติ ชัยณรงค์ฤทธิ์|
+|60070029 |      60070057      |      60070090      | 60070111|
+|    [@ttaitana](https://github.com/ttaitana)    |     [@boomNDS](https://github.com/boomNDS)     |     [@wiput1999](https://github.com/wiput1999)     | [@apichart2425](https://github.com/apichart2425) |
