@@ -2,12 +2,20 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const fetch = require('node-fetch')
 const axios = require('axios')
+const cron = require('node-cron');
 const app = express()
 let currency = {}
 // let currency = fetch_one_hours()
 
+
+let task = cron.schedule('*/10 * * * * *', () => {
+  fetch_one_hours()
+  console.log('running a task every 10 seconds');
+});
+task.start()
+
 // set timer
-setInterval(fetch_one_hours,10000)
+// setInterval(fetch_one_hours,10000)
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
