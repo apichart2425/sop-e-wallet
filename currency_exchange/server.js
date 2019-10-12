@@ -9,8 +9,8 @@ let currency = {}
 
 
 let task = cron.schedule('*/10 * * * * *', () => {
+  console.log('\nrunning a task every 10 seconds');
   fetch_one_hours()
-  console.log('running a task every 10 seconds');
 });
 task.start()
 
