@@ -27,16 +27,16 @@ app.get('/', (req, res) => {
 })
 
 // get currency exchange base THB
-// app.get('/services/exchange', (req, res) => {
-//   console.log("/currency")
-//   res.send(currency)
-// })
+app.get('/services/exchange', (req, res) => {
+  console.log("/currency")
+  res.send(currency)
+})
 
 // Request specific exchange rates by setting the symbols parameter.
-app.get('/services/exchange', (req, res) => {
-  console.log(req.query.symbols)
-  res.send("symbols")
-})
+// app.get('/services/exchange', (req, res) => {
+//   console.log(req.query.symbols)
+//   res.send("symbols")
+// })
 
 app.listen(3000, () => {
   console.log('Start server at port 3000.')
