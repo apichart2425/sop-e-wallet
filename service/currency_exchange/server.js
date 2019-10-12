@@ -7,7 +7,7 @@ let currency = {}
 // let currency = fetch_one_hours()
 
 // set timer
-setInterval(fetch_one_hours,60000)
+setInterval(fetch_one_hours,10000)
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
@@ -15,13 +15,19 @@ app.use(bodyParser.urlencoded({
 }))
 
 app.get('/', (req, res) => {
-  res.send('Currency Exchange Service')
+  res.send('Currency Exchange Service /services/exchange to get currency exchage')
 })
 
 // get currency exchange base THB
-app.get('/currency', (req, res) => {
-  console.log("/currency")
-  res.send(currency)
+// app.get('/services/exchange', (req, res) => {
+//   console.log("/currency")
+//   res.send(currency)
+// })
+
+// Request specific exchange rates by setting the symbols parameter.
+app.get('/services/exchange', (req, res) => {
+  console.log(req.query.symbols)
+  res.send("symbols")
 })
 
 app.listen(3000, () => {
