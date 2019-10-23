@@ -1,0 +1,18 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: cert
+  namespace: ewallet
+spec:
+  secretName: cert
+  dnsNames:
+    - sop.wiput.me
+  acme:
+    config:
+      - http01:
+          ingressClass: nginx
+        domains:
+          - sop.wiput.me
+  issuerRef:
+    name: letsencrypt
+    kind: ClusterIssuer

@@ -1,0 +1,44 @@
+steps:
+#step 1
+- name: 'gcr.io/cloud-builders/docker'
+  entrypoint: 'bash'
+  args: [
+   '-c',
+   'docker pull gcr.io/sop-ewallet/zuul:latest || exit 0'
+  ]
+  id: 'init'
+  waitFor: ['-']
+#step 2
+- name: gcr.io/cloud-builders/docker
+  args: [
+   'build',
+   '-t',
+   'gcr.io/sop-ewallet/zuul:$COMMIT_SHA',
+   '.'
+  ]
+  id: 'build'
+  waitFor: ['init']
+#step 3
+- name: 'gcr.io/cloud-builders/docker'
+  entrypoint: 'bash'
+  args: [
+   '-c',
+   'docker push gcr.io/sop-ewallet/zuul:latest || exit 0'
+  ]
+  id: 'push'
+  waitFor: ['init', 'build']
+#step 4
+- name: 'gcr.io/cloud-builders/kubectl'
+  args: [
+   'set',
+   'image',
+   'deployment',
+   'zuul',
+   'zuul=gcr.io/sop-ewallet/zuul:$COMMIT_SHA',
+   '--namespace=ewallet'
+  ]
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=asia-southeast1-b'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=sop-cluster'
+  id: 'deploy'
+  waitFor: ['init', 'build', 'push']
