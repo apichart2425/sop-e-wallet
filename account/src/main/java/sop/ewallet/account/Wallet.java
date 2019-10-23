@@ -18,7 +18,19 @@ public class Wallet {
         this.SGD = SGD;
     }
     public void inductBalance(String currency, double amount){
-
+        if(currency.equals("USD")){
+            USD += amount;
+        }else if(currency.equals("THB")){
+            THB += amount;
+        }else if(currency.equals("EUR")){
+            EUR += amount;
+        }else if(currency.equals("CNY")){
+            CNY += amount;
+        }else if(currency.equals("JPY")){
+            JPY += amount;
+        }else if(currency.equals("SGD")){
+            SGD += amount;
+        }
     }
 
     public void deductBalance(String currency, double amount){
