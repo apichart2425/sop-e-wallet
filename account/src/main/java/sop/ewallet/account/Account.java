@@ -4,21 +4,25 @@ public class Account {
     private int ac_id;
     private Wallet ac_wallet;
 
-    Account(){
+    Account(int ac_id){
         ac_wallet = new Wallet();
-        ac_id = 1;
-    }
-
-    public Wallet addDefaultBalance(String currency, double balance){
-        ac_wallet.addBalance(currency, balance);
-        return ac_wallet;
-    }
-
-    public double getUSDBalance(){
-        return ac_wallet.getUSD();
+        this.ac_id = ac_id;
     }
 
     public Wallet getInfo(){
+        return ac_wallet;
+    }
+
+    public Wallet transfer(Account traget){
+//        Add action
+        return ac_wallet;
+    }
+    public Wallet withdraw(double amount){
+//        Add action
+        return ac_wallet;
+    }
+    public Wallet deposit(double amount){
+//        Add action
         return ac_wallet;
     }
 }

@@ -8,46 +8,15 @@ public class Wallet {
     private double EUR;
     private double SGD;
 
-    Wallet(){}
-    Wallet(double USD, double THB, double EUR, double JPY, double CNY, double SGD){
-        this.USD = USD;
-        this.THB = THB;
-        this.EUR = EUR;
-        this.CNY = CNY;
-        this.JPY = JPY;
-        this.SGD = SGD;
-    }
-    public void inductBalance(String currency, double amount){
-        if(currency.equals("USD")){
-            USD += amount;
-        }else if(currency.equals("THB")){
-            THB += amount;
-        }else if(currency.equals("EUR")){
-            EUR += amount;
-        }else if(currency.equals("CNY")){
-            CNY += amount;
-        }else if(currency.equals("JPY")){
-            JPY += amount;
-        }else if(currency.equals("SGD")){
-            SGD += amount;
-        }
+    Wallet(){
+        this.USD = 0;
+        this.THB = 0;
+        this.EUR = 0;
+        this.CNY = 0;
+        this.JPY = 0;
+        this.SGD = 0;
     }
 
-    public void deductBalance(String currency, double amount){
-        if(currency.equals("USD")){
-            USD -= amount;
-        }else if(currency.equals("THB")){
-            THB -= amount;
-        }else if(currency.equals("EUR")){
-            EUR -= amount;
-        }else if(currency.equals("CNY")){
-            CNY -= amount;
-        }else if(currency.equals("JPY")){
-            JPY -= amount;
-        }else if(currency.equals("SGD")){
-            SGD -= amount;
-        }
-    }
 
     public void addBalance(String currency, double balance){
         if(currency.equals("USD")){
