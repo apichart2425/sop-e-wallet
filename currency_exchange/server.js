@@ -7,15 +7,12 @@ const app = express()
 let currency = {}
 // let currency = fetch_one_hours()
 
-
+//  set schedule fetch_one_hours()
 let task = cron.schedule('*/10 * * * * *', () => {
   console.log('\nrunning a task every 10 seconds');
   fetch_one_hours()
 });
 task.start()
-
-// set timer
-// setInterval(fetch_one_hours,10000)
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
@@ -32,11 +29,6 @@ app.get('/services/exchange', (req, res) => {
   res.send(currency)
 })
 
-// Request specific exchange rates by setting the symbols parameter.
-// app.get('/services/exchange', (req, res) => {
-//   console.log(req.query.symbols)
-//   res.send("symbols")
-// })
 
 app.listen(3000, () => {
   console.log('Start server at port 3000.')
