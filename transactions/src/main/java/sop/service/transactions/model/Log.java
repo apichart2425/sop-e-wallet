@@ -45,6 +45,14 @@ public class Log {
     @Temporal(TemporalType.TIMESTAMP)
     public Date created_on;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public int getAccount_source() {
         return account_source;
     }
