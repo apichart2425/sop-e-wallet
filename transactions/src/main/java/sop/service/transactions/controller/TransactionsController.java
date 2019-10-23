@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import sop.service.transactions.model.Log;
+import sop.service.transactions.repositories.LogRepository;
+import sop.service.transactions.repositories.ResourceNotFoundException;
 
 //import net.guides.springboot2.springboot2jpacrudexample.exception.ResourceNotFoundException;
 //import net.guides.springboot2.springboot2jpacrudexample.model.Employee;
@@ -26,19 +29,27 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/service/transaction")
 public class TransactionsController {
-//    @Autowired
-//    private EmployeeRepository employeeRepository;
-//
+    @Autowired
+    private LogRepository logRepository;
 
-//    @GetMapping("/")
-//    public List<Employee> getAllEmployees() {
-//        return .findAll();
-//    }
 
-//    @PostMapping("/withdraw")
-//    public Employee createEmployee(@Valid @RequestBody Employee employee) {
-//        return employeeRepository.save(employee);
-//    }
+    @GetMapping("/log")
+    public List<Log> getAllLog() {
+        return logRepository.findAll();
+    }
+
+    @GetMapping("/log/{id}")
+    public ResponseEntity<Log> getEmployeeById(@PathVariable(value = "id") long log_id)
+            throws ResourceNotFoundException {
+        Log log_data = logRepository.findById(log_id)
+                .orElseThrow(() -> new ResourceNotFoundException("Id not found for this id :: " + log_id));
+        return ResponseEntity.ok().body(log_data);
+    }
+
+    @PostMapping("/withdraw")
+    public Log createEmployee(@Valid @RequestBody Log log_witdraw) {
+        return logRepository.save(log_witdraw);
+    }
 //
 //    @PutMapping("/deposit")
 //    public ResponseEntity<Employee> updateEmployee(@PathVariable(value = "id") Long employeeId,

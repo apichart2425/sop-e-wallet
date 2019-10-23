@@ -1,5 +1,9 @@
 package sop.service.transactions.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -13,29 +17,32 @@ public class Log {
     //    @Id @GeneratedValue val id: Long ? = null,
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @NotNull(message = "account_source is required")
     public int account_source;
 
-    @NotNull(message = "account_destination is required")
+//    @NotNull(message = "account_destination is required")
     public int account_destination;
 
     @NotNull(message = "balance is required")
     @Min(0)
     public double balance;
 
-    @NotNull(message = "balance is required")
+    @NotNull(message = "service is required")
     public String service;
 
 
-    @NotNull(message = "balance is required")
+    @NotNull(message = "currency_source is required")
     public String currency_source;
 
-    @NotNull(message = "balance is required")
+//    @NotNull(message = "currency_destination is required")
     public String currency_destination;
 
-    @NotNull(message = "balance is required")
+//    @NotNull(message = "Date(created_on) is required")
+    @CreationTimestamp
+    @CreatedDate
+    @Temporal(TemporalType.TIMESTAMP)
     public Date created_on;
 
     public int getAccount_source() {
