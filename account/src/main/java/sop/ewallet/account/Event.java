@@ -1,4 +1,4 @@
 package sop.ewallet.account;
 
-public class Event extends BaseEntity{
+public class Event{
 }
