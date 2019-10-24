@@ -5,6 +5,8 @@ const axios = require('axios')
 const cron = require('node-cron');
 const app = express()
 let currency = {}
+let list_currency = ['USD', 'THB', 'JPY', 'CNY', 'EUR', 'SGD']
+let base = "THB"
 
 // ------------------ Eureka Config --------------------------------------------
 
@@ -32,15 +34,15 @@ const eureka = new Eureka({
     servicePath: '/eureka/apps/'
   }
 });
-eureka.logger.level('debug');
-eureka.start(function(error){
-  console.log(error || 'complete');
-});
+// eureka.logger.level('debug');
+// eureka.start(function(error){
+//   console.log(error || 'complete');
+// });
 
 //  set schedule fetch_one_hours()
 let task = cron.schedule('*/10 * * * * *', () => {
   console.log('\nrunning a task every 10 seconds');
-  fetch_one_hours()
+  fetch_one_hours(base)
 });
 task.start()
 
@@ -55,8 +57,12 @@ app.get('/', (req, res) => {
 
 // get currency exchange base THB
 app.get('/services/exchange', (req, res) => {
-  console.log("/currency")
-  res.send(currency)
+  console.log("/currency :" + req.query.base)
+  if (req.query.base === undefined || req.query.base === null || list_currency.indexOf(req.query.base) === -1) {
+    res.send(currency['THB'])
+  } else {
+    res.send(currency[req.query.base])
+  }
 })
 
 
@@ -66,15 +72,15 @@ let server = app.listen(3000, function () {
   let port = server.address().port;
   console.log('Listening at http://%s:%s', host, port);
 });
-// app.listen(3000, () => {
-//   console.log('Start server at port 3000.')
-// })
 
 // fetch data every 1 hour
 async function fetch_one_hours() {
   // build api URL with user zip
   console.log("currency has been updated")
-  const baseUrl = 'https://api.exchangeratesapi.io/latest?base=THB';
-  await axios.get(baseUrl)
-    .then((res) => currency = res.data)
+  await list_currency.forEach(base_on => {
+    const baseUrl = 'https://api.exchangeratesapi.io/latest?base=' + base_on;
+    axios.get(baseUrl)
+      .then((res) => currency[base_on] = res.data)
+  });
+
 }
