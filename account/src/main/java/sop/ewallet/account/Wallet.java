@@ -1,5 +1,11 @@
 package sop.ewallet.account;
 
+/*
+Action -> widthdraw = WD
+          deposit = DP
+          transfer = TF
+ */
+
 public class Wallet {
     private double USD;
     private double THB;
