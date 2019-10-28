@@ -22,3 +22,7 @@ eureka:
 
 zuul:
   ignored-services: '*'
+  routes:
+    pgadmin:
+      path: /pgadmin/**
+      url: http://pgadmin/

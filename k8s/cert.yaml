@@ -7,12 +7,14 @@ spec:
   secretName: cert
   dnsNames:
     - sop.wiput.me
+    - pgadmin.wiput.me
   acme:
     config:
       - http01:
           ingressClass: nginx
         domains:
           - sop.wiput.me
+          - pgadmin.wiput.me
   issuerRef:
     name: letsencrypt
     kind: ClusterIssuer
