@@ -57,7 +57,8 @@ app.get('/', (req, res) => {
 
 // get currency exchange base THB
 app.get('/services/exchange', (req, res) => {
-  console.log(" /currency?base=" + req.query.base)
+  let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  console.log(ip,"/currency?base=",req.query.base)
   if (req.query.base === undefined || req.query.base === null || list_currency.indexOf(req.query.base.toUpperCase()) === -1) {
     res.send(currency['THB'])
   } else {
@@ -65,12 +66,11 @@ app.get('/services/exchange', (req, res) => {
   }
 })
 
-
 // ------------------ Server Config --------------------------------------------
 let server = app.listen(3000, function () {
-  let host = server.address().address;
-  let port = server.address().port;
-  console.log('Listening at http://%s:%s', host, port);
+  let host = server.address().address
+  let port = server.address().port
+  console.log('Listening at http://%s:%s', host, port)
 });
 
 // fetch data every 1 hour
@@ -78,7 +78,7 @@ async function fetch_one_hours() {
   // build api URL with user zip
   console.log("currency has been updated")
   await list_currency.forEach(base_on => {
-    const baseUrl = 'https://api.exchangeratesapi.io/latest?base=' + base_on;
+    const baseUrl = 'https://api.exchangeratesapi.io/latest?base=' + base_on
     axios.get(baseUrl)
       .then((res) => currency[base_on] = res.data)
   });
