@@ -1,0 +1,9 @@
+eureka:
+  client:
+    enabled: false
+
+
+app:
+  jwtSecret: "C&F)J@NcRfUjWnZr4u7x!A%D*G-KaPdSgVkYp2s5v8y/B?E(H+MbQeThWmZq4t6w"
+  jwtExpirationInMs: 604800000
+
