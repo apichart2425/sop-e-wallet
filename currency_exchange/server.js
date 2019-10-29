@@ -52,7 +52,7 @@ app.use(bodyParser.urlencoded({
 }))
 
 app.get('/', (req, res) => {
-  res.send('Currency Exchange Service /services/exchange to get currency exchage')
+  res.send('Currency Exchange Service method GET /services/exchange to get currency exchage (base on THB) or /services/exchange?base=currency currency support [USD, THB, JPY, CNY, EUR, SGD]')
 })
 
 // get currency exchange base THB
