@@ -57,7 +57,7 @@ app.get('/', (req, res) => {
 
 // get currency exchange base THB
 app.get('/services/exchange', (req, res) => {
-  console.log("/currency :" + req.query.base)
+  console.log(" /currency?base=" + req.query.base)
   if (req.query.base === undefined || req.query.base === null || list_currency.indexOf(req.query.base) === -1) {
     res.send(currency['THB'])
   } else {
