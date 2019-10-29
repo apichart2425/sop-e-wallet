@@ -2,23 +2,22 @@ package sop.service.transactions.controller;
 
 //https://www.javaguides.net/2019/01/springboot-postgresql-jpa-hibernate-crud-restful-api-tutorial.html
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import sop.service.transactions.method.TransactionMethod;
+import sop.service.transactions.model.ActionTransaction;
 import sop.service.transactions.model.Log;
+import sop.service.transactions.model.Wallet;
 import sop.service.transactions.repositories.LogRepository;
 import sop.service.transactions.repositories.ResourceNotFoundException;
 
@@ -32,6 +31,7 @@ public class TransactionsController {
     @Autowired
     private LogRepository logRepository;
 
+    private TransactionMethod transactionMethod = new TransactionMethod() ;
 
     @GetMapping("/log")
     public List<Log> getAllLog() {
@@ -47,10 +47,16 @@ public class TransactionsController {
     }
 
     @PostMapping("/withdraw")
-    public Log createEmployee(@Valid @RequestBody Log log_witdraw) {
-        return logRepository.save(log_witdraw);
+    public ActionTransaction createEmployee(@Valid @RequestBody ActionTransaction obj) {
+        return  transactionMethod.withdraw(obj);
+//        return logRepository.save(log_witdraw);
     }
-//
+
+    @PostMapping("/test")
+    public Wallet test(@Valid @RequestBody ActionTransaction log_witdraw) {
+        return log_witdraw.getAccount_source().getWallets();
+    }
+
 //    @PutMapping("/deposit")
 //    public ResponseEntity<Employee> updateEmployee(@PathVariable(value = "id") Long employeeId,
 //                                                   @Valid @RequestBody Employee employeeDetails) throws ResourceNotFoundException {
