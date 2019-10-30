@@ -1,6 +1,15 @@
-package sop.ewallet.account;
+package sop.ewallet.account.response;
+
+import sop.ewallet.account.model.Account;
+
+/*
+actions =>  DP = deposit
+            WD = withdraw
+            TF = transfer
+ */
 
 public class RequestAction {
+    private boolean status;
     private String action;
     private double balance;
     private String currency_origin;
@@ -8,12 +17,21 @@ public class RequestAction {
     private Account origin;
     private Account dest;
 
-    RequestAction(){}
+    public RequestAction(){}
+
 
     public RequestAction(String action, double balance, String currency_origin, Account origin) {
         this.action = action;
         this.balance = balance;
         this.currency_origin = currency_origin;
+        this.origin = origin;
+    }
+
+    public RequestAction(String action, double balance, String currency_origin, String currency_dest, Account origin) {
+        this.action = action;
+        this.balance = balance;
+        this.currency_origin = currency_origin;
+        this.currency_dest = currency_dest;
         this.origin = origin;
     }
 

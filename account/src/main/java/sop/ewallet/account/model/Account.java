@@ -1,10 +1,10 @@
-package sop.ewallet.account;
+package sop.ewallet.account.model;
 
 public class Account {
     private int ac_id;
     private Wallet ac_wallet;
 
-    Account(int ac_id){
+    public Account(int ac_id){
         ac_wallet = new Wallet();
         this.ac_id = ac_id;
     }
@@ -26,9 +26,9 @@ public class Account {
 //        Add action
         return ac_wallet;
     }
-    public Wallet deposit(double amount){
+    public Wallet deposit(String currency, double amount){
 //        Add action
-        this.ac_wallet.setUSD(amount);
+        this.ac_wallet.addBalance(currency, amount);
         return ac_wallet;
     }
 }

@@ -1,4 +1,4 @@
-package sop.ewallet.account;
+package sop.ewallet.account.model;
 
 /*
 Action -> widthdraw = WD
@@ -13,6 +13,11 @@ public class Wallet {
     private double CNY;
     private double EUR;
     private double SGD;
+
+    public Wallet(double JPY, double USD) {
+        this.JPY = JPY;
+        this.USD = USD;
+    }
 
     Wallet(){
         this.USD = 0;
