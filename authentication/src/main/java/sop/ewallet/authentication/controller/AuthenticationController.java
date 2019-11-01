@@ -25,9 +25,12 @@ import sop.ewallet.authentication.payload.ApiResponse;
 import sop.ewallet.authentication.payload.JwtAuthenticationResponse;
 import sop.ewallet.authentication.payload.LoginRequest;
 import sop.ewallet.authentication.payload.SignUpRequest;
+import sop.ewallet.authentication.payload.UserDetailResponse;
 import sop.ewallet.authentication.repository.RoleRepository;
 import sop.ewallet.authentication.repository.UserRepository;
+import sop.ewallet.authentication.security.CurrentUser;
 import sop.ewallet.authentication.security.JwtTokenProvider;
+import sop.ewallet.authentication.security.UserPrincipal;
 
 @RestController
 @RequestMapping("/auth")
@@ -48,6 +51,17 @@ public class AuthenticationController {
   @Autowired
   JwtTokenProvider tokenProvider;
 
+  @RequestMapping("/me")
+  public ResponseEntity<UserDetailResponse> getUserProfile(@CurrentUser UserPrincipal currentUser) {
+    return ResponseEntity.ok(
+        new UserDetailResponse(
+            currentUser.getId(),
+            currentUser.getName(),
+            currentUser.getUsername()
+        )
+    );
+  }
+
   @PostMapping("/authenticate")
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
@@ -66,12 +80,12 @@ public class AuthenticationController {
 
   @PostMapping("/register")
   public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
-    if(userRepository.existsByUsername(signUpRequest.getUsername())) {
+    if (userRepository.existsByUsername(signUpRequest.getUsername())) {
       return new ResponseEntity<>(new ApiResponse(false, "Username is already taken!"),
           HttpStatus.BAD_REQUEST);
     }
 
-    if(userRepository.existsByEmail(signUpRequest.getEmail())) {
+    if (userRepository.existsByEmail(signUpRequest.getEmail())) {
       return new ResponseEntity<>(new ApiResponse(false, "Email Address already in use!"),
           HttpStatus.BAD_REQUEST);
     }
@@ -93,6 +107,7 @@ public class AuthenticationController {
         .fromCurrentContextPath().path("/api/users/{username}")
         .buildAndExpand(result.getUsername()).toUri();
 
-    return ResponseEntity.created(location).body(new ApiResponse(true, "User registered successfully"));
+    return ResponseEntity.created(location)
+        .body(new ApiResponse(true, "User registered successfully"));
   }
 }
