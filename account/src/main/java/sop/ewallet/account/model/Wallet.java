@@ -1,25 +1,48 @@
 package sop.ewallet.account.model;
 
+import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 /*
 Action -> widthdraw = WD
           deposit = DP
           transfer = TF
  */
-
+@Entity
+@Table(name = "wallet")
 public class Wallet {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int ac_id;
+
+    @NotNull(message = "balance is required")
+    @Min(0)
     private double USD;
+    @NotNull(message = "balance is required")
+    @Min(0)
     private double THB;
+    @NotNull(message = "balance is required")
+    @Min(0)
     private double JPY;
+    @NotNull(message = "balance is required")
+    @Min(0)
     private double CNY;
+    @NotNull(message = "balance is required")
+    @Min(0)
     private double EUR;
+    @NotNull(message = "balance is required")
+    @Min(0)
     private double SGD;
 
     public Wallet(double JPY, double USD) {
+        this.ac_id = ac_id;
         this.JPY = JPY;
         this.USD = USD;
     }
 
-    Wallet(){
+    Wallet(int ac_id){
+        this.ac_id = ac_id;
         this.USD = 0;
         this.THB = 0;
         this.EUR = 0;
@@ -46,6 +69,13 @@ public class Wallet {
     }
 
 
+    public int getAc_id() {
+        return ac_id;
+    }
+
+    public void setAc_id(int ac_id) {
+        this.ac_id = ac_id;
+    }
     public double getUSD() {
         return USD;
     }
