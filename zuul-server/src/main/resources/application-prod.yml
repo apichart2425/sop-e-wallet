@@ -5,9 +5,6 @@ spring:
     name: zuul
   profiles:
     active: prod
-  cloud:
-    config:
-      uri: http://config:8888
   devtools:
     add-properties: false
 
@@ -21,8 +18,14 @@ eureka:
       defaultZone: http://eureka:8761/eureka/
 
 zuul:
-  ignored-services: '*'
   routes:
-    pgadmin:
-      path: /pgadmin/**
-      url: http://pgadmin/
+    authentication:
+      path: '/authentication/**'
+      url: "http://authentication:8080"
+      sensitiveHeaders:
+
+  prefix: '/services'
+
+ribbon:
+  eureka:
+    enabled: false
