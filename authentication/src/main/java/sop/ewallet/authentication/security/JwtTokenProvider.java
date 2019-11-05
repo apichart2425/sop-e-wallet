@@ -1,5 +1,7 @@
 package sop.ewallet.authentication.security;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
@@ -20,6 +22,19 @@ public class JwtTokenProvider {
   @Value("${app.jwtExpirationInMs}")
   private int jwtExpirationInMs;
 
+  public String objectToJson(Object object) {
+    ObjectMapper mapper = new ObjectMapper();
+
+    String result = "";
+    try {
+      result = mapper.writeValueAsString(object);
+    } catch (JsonProcessingException e) {
+      e.printStackTrace();
+    }
+
+    return result;
+  }
+
   public String generateToken(Authentication authentication) {
 
     UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
@@ -29,9 +44,12 @@ public class JwtTokenProvider {
 
     var signingKey = jwtSecret.getBytes();
 
+    UserDetail userDetail = new UserDetail(userPrincipal.getId(), userPrincipal.getName(),
+        userPrincipal.getUsername(), userPrincipal.getEmail());
+
     return Jwts.builder()
         .signWith(Keys.hmacShaKeyFor(signingKey), SignatureAlgorithm.HS512)
-        .setSubject(Long.toString(userPrincipal.getId()))
+        .setSubject(objectToJson(userDetail))
         .setIssuedAt(new Date())
         .setExpiration(expiryDate)
         .compact();
@@ -45,7 +63,14 @@ public class JwtTokenProvider {
         .parseClaimsJws(token)
         .getBody();
 
-    return Long.parseLong(claims.getSubject());
+    UserDetail userDetail = new UserDetail();
+    try {
+      userDetail = new ObjectMapper().readValue(claims.getSubject(), UserDetail.class);
+    } catch (JsonProcessingException e) {
+      e.printStackTrace();
+    }
+
+    return userDetail.getId();
   }
 
   public boolean validateToken(String authToken) {

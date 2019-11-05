@@ -57,7 +57,8 @@ public class AuthenticationController {
         new UserDetailResponse(
             currentUser.getId(),
             currentUser.getName(),
-            currentUser.getUsername()
+            currentUser.getUsername(),
+            currentUser.getEmail()
         )
     );
   }

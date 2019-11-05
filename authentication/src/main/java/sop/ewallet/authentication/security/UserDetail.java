@@ -1,16 +1,16 @@
-package sop.ewallet.authentication.payload;
+package sop.ewallet.authentication.security;
 
-public class UserDetailResponse {
+public class UserDetail {
 
   private Long id;
   private String name;
   private String username;
   private String email;
 
-  public UserDetailResponse() {
+  public UserDetail() {
   }
 
-  public UserDetailResponse(Long id, String name, String username, String email) {
+  public UserDetail(Long id, String name, String username, String email) {
     this.id = id;
     this.name = name;
     this.username = username;
