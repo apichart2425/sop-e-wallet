@@ -33,7 +33,7 @@ import sop.ewallet.authentication.security.JwtTokenProvider;
 import sop.ewallet.authentication.security.UserPrincipal;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/")
 public class AuthenticationController {
 
   @Autowired
