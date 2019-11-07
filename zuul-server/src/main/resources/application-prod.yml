@@ -8,15 +8,6 @@ spring:
   devtools:
     add-properties: false
 
-eureka:
-  instance:
-    preferIpAddress: true
-  client:
-    registerWithEureka: true
-    fetchRegistry: true
-    serviceUrl:
-      defaultZone: http://eureka:8761/eureka/
-
 zuul:
   routes:
     authentication:
