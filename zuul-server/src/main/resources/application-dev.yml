@@ -1,0 +1,13 @@
+server:
+  port: 9090
+spring:
+  application:
+    name: zuul
+  profiles:
+    active: dev
+  cloud:
+    config:
+      uri: http://localhost:8888
+
+zuul:
+  ignored-services: '*'
