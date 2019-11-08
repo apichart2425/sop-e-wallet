@@ -1,35 +1,33 @@
 package sop.ewallet.account.model;
 
-import org.apache.catalina.User;
-
-import javax.validation.constraints.Null;
-
 public class UserRequest {
-    private int id;
+    private int id_origin;
+    private int id_dest;
     private double balance;
     private String currency_origin;
     private String currency_dest;
 
     public UserRequest(){}
-    public UserRequest(int id, double balance, String currency_origin) {
-        this.id = id;
+    public UserRequest(int id_origin, double balance, String currency_origin) {
+        this.id_origin = id_origin;
         this.balance = balance;
         this.currency_origin = currency_origin;
     }
 
-    public UserRequest(int id, double balance, String currency_origin, String currency_dest) {
-        this.id = id;
+    public UserRequest(int id_origin, int id_dest, double balance, String currency_origin, String currency_dest) {
+        this.id_origin = id_origin;
+        this.id_dest = id_dest;
         this.balance = balance;
         this.currency_origin = currency_origin;
         this.currency_dest = currency_dest;
     }
 
-    public int getId() {
-        return id;
+    public int getId_origin() {
+        return id_origin;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId_origin(int id_origin) {
+        this.id_origin = id_origin;
     }
 
     public double getBalance() {
@@ -55,5 +53,9 @@ public class UserRequest {
     public void setCurrency_dest(String currency_dest) {
         this.currency_dest = currency_dest;
     }
+
+    public int getId_dest() { return id_dest; }
+
+    public void setId_dest(int id_dest) { this.id_dest = id_dest; }
 
 }

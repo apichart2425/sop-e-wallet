@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import sop.ewallet.account.model.Account;
 
 @Repository
-public interface AccountRepositories extends JpaRepository<Account, Long> {
+public interface AccountRepositories extends JpaRepository<Account, Integer> {
 }
