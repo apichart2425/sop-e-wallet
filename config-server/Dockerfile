@@ -8,7 +8,7 @@ RUN mvn -T 1.5C -B dependency:resolve dependency:resolve-plugins
 
 COPY src /build/src
 
-RUN mvn -Dmaven.test.skip=true package
+RUN mvn -T 1.5C -Dmaven.test.skip=true package
 
 FROM openjdk:11-slim as runtime
 EXPOSE 8080
