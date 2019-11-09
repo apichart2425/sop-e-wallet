@@ -11,7 +11,7 @@ spring:
 zuul:
   routes:
     authentication:
-      path: '/authentication/**'
+      path: '/auth/**'
       url: "http://authentication:8080"
       sensitiveHeaders:
 

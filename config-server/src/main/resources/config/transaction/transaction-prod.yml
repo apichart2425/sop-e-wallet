@@ -3,6 +3,6 @@ app:
   jwtExpirationInMs: 604800000
 
 database:
-  url: postgresql://postgres/authentication
-  username: authentication
-  password: ZYcTCYwRLmYZ8y2h
+  url: postgresql://postgres/transaction
+  username: transaction
+  password: AVc54VabhdP6uLnR
