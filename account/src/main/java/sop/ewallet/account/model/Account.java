@@ -61,8 +61,9 @@ public class Account {
     public double getUSD() {
         return USD;
     }
+    public void setUSD(double USD) { this.USD = USD; }
 
-    public void setUSD(double USD) {
+    public void getUSD(double USD) {
         this.USD = USD;
     }
 
