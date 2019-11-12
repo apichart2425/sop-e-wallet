@@ -81,7 +81,6 @@ public class TransactionMethod {
 
     public ActionTransaction deposit(ActionTransaction jobj) throws IOException {
 
-        String currency = "EUR";
         long account_sourceID = jobj.getAccount_source().getId();
         Wallet account_wallet = jobj.getAccount_source().getWallets();
         double balance = jobj.getBalance();
@@ -94,65 +93,67 @@ public class TransactionMethod {
 
         double rate = response_currency.getRates().get(currency_destination.toUpperCase());
         System.out.println("--------------------------");
-        System.out.println(balance*rate);
+        System.out.println(account_wallet.getTHB());
         System.out.println("--------------------------");
 
         if (jobj.getAction().equals("deposit")){
-            System.out.println("If case");
             System.out.println(currency_destination.toLowerCase());
             switch (currency_destination.toLowerCase()){
                 case "usd":
-                    if(account_wallet.getUSD() <= 0){
-                        System.out.println("add blance case");
-                        account_wallet.setUSD(account_wallet.getUSD() + (balance*rate));
-                        jobj.setStatus(true);
-                    }
-                    else
-                        jobj.setStatus(false);
+                    System.out.println("wallet usd");
+                    System.out.println(account_wallet.getUSD());
+                    account_wallet.setUSD(account_wallet.getUSD() + (balance*rate));
+                    System.out.println("New wallet usd");
+                    System.out.println(account_wallet.getUSD());
+                    jobj.setStatus(true);
                     break;
                 case "thb":
-                    if(account_wallet.getTHB() <= 0){
-                        account_wallet.setTHB(account_wallet.getTHB() + (balance*rate));
-                        jobj.setStatus(true);
-                    }
-                    else
-                        jobj.setStatus(false);
+                    System.out.println("thai");
+                    System.out.println("wallet thai");
+                    System.out.println(account_wallet.getTHB());
+                    account_wallet.setTHB(account_wallet.getTHB() + (balance*rate));
+                    System.out.println("New wallet thai");
+                    System.out.println(account_wallet.getTHB());
+                    jobj.setStatus(true);
                     break;
                 case "eur":
-                    if(account_wallet.getEUR() <= 0){
-                        account_wallet.setEUR(account_wallet.getEUR() + (balance*rate));
-                        jobj.setStatus(true);
-                    }
-                    else
-                        jobj.setStatus(false);
+                    System.out.println("eur");
+                    System.out.println("wallet eur");
+                    System.out.println(account_wallet.getEUR());
+                    account_wallet.setEUR(account_wallet.getEUR() + (balance*rate));
+                    System.out.println("New wallet eur");
+                    System.out.println(account_wallet.getEUR());
+                    jobj.setStatus(true);
                     break;
                 case "jpy":
-                    if(account_wallet.getJPY() <= 0){
-                        account_wallet.setJPY(account_wallet.getJPY() + (balance*rate));
-                        jobj.setStatus(true);
-                    }
-                    else
-                        jobj.setStatus(false);
+                    System.out.println("jpy");
+                    System.out.println("wallet jpy");
+                    System.out.println(account_wallet.getJPY());
+                    account_wallet.setJPY(account_wallet.getJPY() + (balance*rate));
+                    System.out.println("New wallet jpy");
+                    System.out.println(account_wallet.getJPY());
+                    jobj.setStatus(true);
                     break;
                 case "cny":
-                    if(account_wallet.getCNY() <= 0){
-                        account_wallet.setCNY(account_wallet.getCNY() + (balance*rate));
-                        jobj.setStatus(true);
-                    }
-                    else
-                        jobj.setStatus(false);
+                    System.out.println("cny");
+                    System.out.println("wallet cny");
+                    System.out.println(account_wallet.getCNY());
+                    account_wallet.setCNY(account_wallet.getCNY() + (balance*rate));
+                    System.out.println("New wallet cny");
+                    System.out.println(account_wallet.getCNY());
+                    jobj.setStatus(true);
                     break;
                 case "sgd":
-                    if(account_wallet.getSGD() <= 0){
-                        account_wallet.setSGD(account_wallet.getSGD() + (balance*rate));
-                        jobj.setStatus(true);
-                    }
-                    else
-                        jobj.setStatus(false);
+                    System.out.println("sgd");
+                    System.out.println("wallet sgd");
+                    System.out.println(account_wallet.getSGD());
+                    account_wallet.setSGD(account_wallet.getSGD() + (balance*rate));
+                    System.out.println("New wallet sgd");
+                    System.out.println(account_wallet.getSGD());
+                    jobj.setStatus(true);
                     break;
                 default:
                     jobj.setStatus(false);
-
             }}
         else
             jobj.setStatus(false);
