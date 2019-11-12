@@ -5,43 +5,47 @@ public class ActionTransaction {
     private  boolean status;
     private String action;
     private double balance;
-    private String currency;
+    private String currency_source;
+    private String currency_destination;
     Account account_source;
     Account account_destination;
 
     public ActionTransaction() {
     }
 
-    public ActionTransaction(String action, double balance, String currency, Account account_source) {
+    public ActionTransaction(boolean status, String action, double balance, String currency_source, Account account_source) {
+        this.status = status;
         this.action = action;
         this.balance = balance;
-        this.currency = currency;
+        this.currency_source = currency_source;
         this.account_source = account_source;
     }
 
-    public ActionTransaction(String action, double balance, String currency, Account account_source, Account account_destination) {
+    public ActionTransaction(boolean status, String action, double balance, String currency_source, String currency_destination, Account account_source) {
+        this.status = status;
         this.action = action;
         this.balance = balance;
-        this.currency = currency;
+        this.currency_source = currency_source;
+        this.currency_destination = currency_destination;
+        this.account_source = account_source;
+    }
+
+    public ActionTransaction(boolean status, String action, double balance, String currency_source, String currency_destination, Account account_source, Account account_destination) {
+        this.status = status;
+        this.action = action;
+        this.balance = balance;
+        this.currency_source = currency_source;
+        this.currency_destination = currency_destination;
         this.account_source = account_source;
         this.account_destination = account_destination;
     }
 
-    public ActionTransaction(boolean status, String action, double balance, String currency, Account account_source) {
-        this.status = status;
-        this.action = action;
-        this.balance = balance;
-        this.currency = currency;
-        this.account_source = account_source;
+    public boolean isStatus() {
+        return status;
     }
 
-    public ActionTransaction(boolean status, String action, double balance, String currency, Account account_source, Account account_destination) {
+    public void setStatus(boolean status) {
         this.status = status;
-        this.action = action;
-        this.balance = balance;
-        this.currency = currency;
-        this.account_source = account_source;
-        this.account_destination = account_destination;
     }
 
     public String getAction() {
@@ -60,12 +64,20 @@ public class ActionTransaction {
         this.balance = balance;
     }
 
-    public String getCurrency() {
-        return currency;
+    public String getCurrency_source() {
+        return currency_source;
     }
 
-    public void setCurrency(String currency) {
-        this.currency = currency;
+    public void setCurrency_source(String currency_source) {
+        this.currency_source = currency_source;
+    }
+
+    public String getCurrency_destination() {
+        return currency_destination;
+    }
+
+    public void setCurrency_destination(String currency_destination) {
+        this.currency_destination = currency_destination;
     }
 
     public Account getAccount_source() {
@@ -82,13 +94,5 @@ public class ActionTransaction {
 
     public void setAccount_destination(Account account_destination) {
         this.account_destination = account_destination;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
     }
 }

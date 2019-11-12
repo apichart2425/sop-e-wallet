@@ -1,12 +1,12 @@
 package sop.service.transactions.model;
 
 public class Wallet {
-    private double USD;
-    private double THB;
-    private double EUR;
-    private double JPY;
-    private double CNY;
-    private double SGD;
+        private double USD;
+        private double THB;
+        private double EUR;
+        private double JPY;
+        private double CNY;
+        private double SGD;
 
     public Wallet() {
     }
