@@ -8,40 +8,10 @@ let currency = {}
 let list_currency = ['USD', 'THB', 'JPY', 'CNY', 'EUR', 'SGD']
 let base = "THB"
 
-// ------------------ Eureka Config --------------------------------------------
-
-const Eureka = require('eureka-js-client').Eureka;
-
-const eureka = new Eureka({
-  instance: {
-    app: 'currency_exchange',
-    hostName: 'localhost',
-    ipAddr: '127.0.0.1',
-    statusPageUrl: 'http://localhost:3000',
-    port: {
-      '$': 3000,
-      '@enabled': 'true',
-    },
-    vipAddress: 'localhost',
-    dataCenterInfo: {
-      '@class': 'com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo',
-      name: 'MyOwn',
-    }
-  },
-  eureka: {
-    host: 'localhost',
-    port: 8761,
-    servicePath: '/eureka/apps/'
-  }
-});
-// eureka.logger.level('debug');
-// eureka.start(function(error){
-//   console.log(error || 'complete');
-// });
 
 //  set schedule fetch_one_hours()
-let task = cron.schedule('*/10 * * * * *', () => {
-  console.log('\nrunning a task every 10 seconds');
+let task = cron.schedule('* * */1 * * *', () => {
+  console.log('\nrunning a task every 1 hours');
   fetch_one_hours(base)
 });
 task.start()
@@ -51,12 +21,12 @@ app.use(bodyParser.urlencoded({
   extended: true
 }))
 
-app.get('/', (req, res) => {
-  res.send('Currency Exchange Service method GET /services/exchange to get currency exchage (base on THB) or /services/exchange?base=currency currency support [USD, THB, JPY, CNY, EUR, SGD]')
-})
+// app.get('/', (req, res) => {
+//   res.send('Currency Exchange Service method GET /services/exchange to get currency exchage (base on THB) or /services/exchange?base=currency currency support [USD, THB, JPY, CNY, EUR, SGD]')
+// })
 
 // get currency exchange base THB
-app.get('/services/exchange', (req, res) => {
+app.get('/', (req, res) => {
   let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   console.log(ip,"/currency?base=",req.query.base)
   if (req.query.base === undefined || req.query.base === null || list_currency.indexOf(req.query.base.toUpperCase()) === -1) {
