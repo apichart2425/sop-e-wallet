@@ -1,5 +1,8 @@
 package sop.ewallet.account.model;
 
+
+import org.springframework.lang.Nullable;
+
 public class UserRequest {
     private Boolean status;
     private String action;
@@ -7,6 +10,8 @@ public class UserRequest {
     private String currency_origin;
     private String currency_destination;
     private Account account_source;
+
+    @Nullable
     private Account account_destination;
 
     public UserRequest(){}
