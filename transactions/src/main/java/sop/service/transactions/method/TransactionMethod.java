@@ -115,7 +115,7 @@ public class TransactionMethod {
             if ((source_wallet.get(currency_source.toLowerCase()) - blance) >= 0) {
                 System.out.println("wallet :" + currency_source.toLowerCase());
                 System.out.println(source_wallet.get(currency_source.toLowerCase()));
-                source_wallet.put(currency_source.toUpperCase(), (Double) source_wallet.get(currency_source.toLowerCase()) - blance);
+                source_wallet.put(currency_source.toLowerCase(), (Double) source_wallet.get(currency_source.toLowerCase()) - blance);
                 destination_wallet.put(currency_destination.toLowerCase(), (Double) destination_wallet.get(currency_destination.toLowerCase())+new_blance);
                 System.out.println("New wallet :" + currency_source.toLowerCase());
                 System.out.println(destination_wallet.get(currency_destination.toLowerCase()));

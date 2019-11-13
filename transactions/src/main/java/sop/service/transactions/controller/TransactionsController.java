@@ -29,7 +29,7 @@ import sop.service.transactions.repositories.ResourceNotFoundException;
 //import net.guides.springboot2.springboot2jpacrudexample.repository.EmployeeRepository;
 
 @RestController
-@RequestMapping("/service/transaction")
+@RequestMapping("/")
 public class TransactionsController {
     @Autowired
     private LogRepository logRepository;
