@@ -14,6 +14,14 @@ zuul:
       path: '/auth/**'
       url: "http://authentication:8080"
       sensitiveHeaders:
+    exchange:
+      path: '/exchange/**'
+      url: "http://exchange:3000"
+      sensitiveHeaders:
+    account:
+      path: '/account/**'
+      url: "http://account:8080"
+      sensitiveHeaders:
 
   prefix: '/services'
 
