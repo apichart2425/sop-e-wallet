@@ -8,9 +8,8 @@ let currency = {}
 let list_currency = ['USD', 'THB', 'JPY', 'CNY', 'EUR', 'SGD']
 let base = "THB"
 
-
 //  set schedule fetch_one_hours()
-let task = cron.schedule('* * */1 * * *', () => {
+let task = cron.schedule('0 0 */1 * * *', () => {
   console.log('\nrunning a task every 1 hours');
   fetch_one_hours(base)
 });
@@ -41,6 +40,8 @@ let server = app.listen(3000, function () {
   let host = server.address().address
   let port = server.address().port
   console.log('Listening at http://%s:%s', host, port)
+  fetch_one_hours(base)
+  console.log("Start! fetch currency")
 });
 
 // fetch data every 1 hour
