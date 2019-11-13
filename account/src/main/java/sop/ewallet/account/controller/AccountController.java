@@ -1,6 +1,5 @@
 package sop.ewallet.account.controller;
 
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import sop.ewallet.account.model.Account;
@@ -36,7 +35,7 @@ public class AccountController {
     public Account deposit(@RequestBody UserRequest ur){
 //        RequestAction re = new RequestAction("DP", ur.getBalance(), ur.getCurrency_origin(), accountRepositories.getOne((long) ur.getId()));
         induct(ur);
-        return accountRepositories.getOne(ur.getAccount_source().getAc_id());
+        return accountRepositories.getOne(ur.getAccount_source().getId());
     }
 //
 //    @PostMapping(value = "/withdraw")
@@ -62,7 +61,7 @@ public class AccountController {
 ////    }
 //
     private void induct(UserRequest ur){
-        accountRepositories.findById(ur.getAccount_source().getAc_id())
+        accountRepositories.findById(ur.getAccount_source().getId())
                 .map(account -> {
                     switch (ur.getCurrency_origin().toLowerCase()){
                         case "usd":
@@ -87,7 +86,7 @@ public class AccountController {
                             throw new ResourceNotFoundException("Wrong currency");
                     }
                     return accountRepositories.save(account);
-                }).orElseThrow(() -> new ResourceNotFoundException("Account not found with id " + ur.getAccount_source().getAc_id()));
+                }).orElseThrow(() -> new ResourceNotFoundException("Account not found with id " + ur.getAccount_source().getId()));
     }
 
 //    private void deduct(int id, String currency, double balance) {

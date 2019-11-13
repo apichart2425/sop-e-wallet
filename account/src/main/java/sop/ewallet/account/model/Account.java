@@ -10,9 +10,6 @@ import org.hibernate.annotations.*;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 
 @Entity
 @Table(name = "account")
@@ -27,7 +24,7 @@ import java.io.Serializable;
 public class Account{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int ac_id;
+    private int id;
 
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
@@ -37,7 +34,7 @@ public class Account{
 
 //constructor
     public Account(int ac_id){
-        this.ac_id = ac_id;
+        this.id = ac_id;
         this.wallet = new Wallet();
     }
 
@@ -53,12 +50,12 @@ public class Account{
         this.wallet = wallet;
     }
 
-    public int getAc_id() {
-        return ac_id;
+    public int getId() {
+        return id;
     }
 
-    public void setAc_id(int ac_id) {
-        this.ac_id = ac_id;
+    public void setId(int id) {
+        this.id = id;
     }
 
 

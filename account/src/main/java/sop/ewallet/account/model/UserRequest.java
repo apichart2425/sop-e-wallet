@@ -5,7 +5,7 @@ public class UserRequest {
     private String action;
     private double balance;
     private String currency_origin;
-    private String currency_dest;
+    private String currency_destination;
     private Account account_source;
     private Account account_destination;
 
@@ -16,7 +16,7 @@ public class UserRequest {
         this.action = action;
         this.balance = balance;
         this.currency_origin = currency_origin.toLowerCase();
-        this.currency_dest = currency_dest.toLowerCase();
+        this.currency_destination = currency_dest.toLowerCase();
         this.account_source = account_source;
     }
 
@@ -25,7 +25,7 @@ public class UserRequest {
         this.action = action;
         this.balance = balance;
         this.currency_origin = currency_origin.toLowerCase();
-        this.currency_dest = currency_dest.toLowerCase();
+        this.currency_destination = currency_dest.toLowerCase();
         this.account_source = account_source;
         this.account_destination = account_destination;
     }
@@ -62,12 +62,12 @@ public class UserRequest {
         this.currency_origin = currency_origin;
     }
 
-    public String getCurrency_dest() {
-        return currency_dest;
+    public String getCurrency_destination() {
+        return currency_destination;
     }
 
-    public void setCurrency_dest(String currency_dest) {
-        this.currency_dest = currency_dest;
+    public void setCurrency_destination(String currency_destination) {
+        this.currency_destination = currency_destination;
     }
 
     public Account getAccount_source() {
