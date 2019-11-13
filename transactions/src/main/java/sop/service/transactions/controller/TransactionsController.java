@@ -58,9 +58,15 @@ public class TransactionsController {
     }
 
     @PostMapping("/deposit")
-    public Object deposit(@Valid @RequestBody ActionTransaction obj) throws IOException {
+    public ActionTransaction deposit(@Valid @RequestBody ActionTransaction obj) throws IOException {
         return  transactionMethod.deposit(obj);
     }
+
+    @PostMapping("/transfer")
+    public AccountWallet transfer(@Valid @RequestBody AccountWallet obj) throws IOException {
+        return  transactionMethod.transfer(obj);
+    }
+
 
     @GetMapping("/test2")
     public MapRate test2(){
