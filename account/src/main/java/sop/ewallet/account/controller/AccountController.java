@@ -1,10 +1,12 @@
 package sop.ewallet.account.controller;
 
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import sop.ewallet.account.model.Account;
 import sop.ewallet.account.model.UserRequest;
+import sop.ewallet.account.model.Wallet;
 import sop.ewallet.account.repositories.AccountRepositories;
 import sop.ewallet.account.repositories.ResourceNotFoundException;
 
@@ -22,7 +24,7 @@ public class AccountController {
 //        this.restTemplate = restTemplateBuilder.build();
 //    }
 
-    private UserRequest sentRequest(UserRequest ur){
+    private UserRequest sentRequest(UserRequest ur, String action){
         ur.getAccount_source().setWallet(accountRepositories.getOne(ur.getAccount_source().getId()).getWallet());
         System.out.println(ur.getAccount_source().getId());
         System.out.println(ur.getAccount_source().getWallet());
@@ -35,7 +37,7 @@ public class AccountController {
                 url = "http://localhost:9634/service/transaction/withdraw";
                 break;
             case "transfer":
-//                ur.getAccount_destination().setWallet(accountRepositories.getOne(ur.getAccount_destination().getId()).getWallet());
+                ur.getAccount_destination().setWallet(accountRepositories.getOne(ur.getAccount_destination().getId()).getWallet());
                 url = "http://localhost:9634/service/transaction/transfer";
                 break;
             default:
@@ -65,23 +67,24 @@ public class AccountController {
     @PostMapping(value = "/deposit")
     public Account deposit(@RequestBody UserRequest ur){
 //        RequestAction re = new RequestAction("DP", ur.getBalance(), ur.getCurrency_origin(), accountRepositories.getOne((long) ur.getId()));
-        UserRequest nur = sentRequest(ur);
-        induct(nur, nur.getAccount_source().getId());
+        UserRequest nur = sentRequest(ur, "deposit");
+        induct(nur.getAccount_source().getWallet(), ur.getCurrency_destination(), ur.getAccount_source().getId());
         return nur.getAccount_source();
     }
 //
     @PostMapping(value = "/withdraw")
     public Account withdraw(@RequestBody UserRequest ur) {
-        UserRequest nur = sentRequest(ur);
-        deduct(nur);
+        UserRequest nur = sentRequest(ur, "withdraw");
+        deduct(nur.getAccount_source().getWallet(), ur.getCurrency_source(), ur.getAccount_source().getId());
         return nur.getAccount_source();
     }
 //
     @PostMapping (value = "/transfer")
-    public Optional[] transfer(@RequestBody UserRequest ur){
-            deduct(ur);
-            induct(ur, ur.getAccount_destination().getId());
-        return new Optional[]{accountRepositories.findById(ur.getAccount_source().getId()), accountRepositories.findById(ur.getAccount_destination().getId())};
+    public Account[] transfer(@RequestBody UserRequest ur){
+        UserRequest nur = sentRequest(ur,"transfer");
+        deduct(nur.getAccount_source().getWallet(), nur.getCurrency_source(), nur.getAccount_source().getId());
+        induct(nur.getAccount_destination().getWallet(), nur.getCurrency_destination(), nur.getAccount_destination().getId());
+        return new Account[]{nur.getAccount_source(), nur.getAccount_destination()};
     }
 //
 ////    @GetMapping(value = "/query/{id}")
@@ -89,65 +92,63 @@ public class AccountController {
 ////        return accountRepositories.cruMoney(id);
 ////    }
 //
-    private void induct(UserRequest ur, int id){
+    private void induct(Wallet wd, String currency, int id){
         accountRepositories.findById(id)
                 .map(account -> {
-                    switch (ur.getCurrency_destination().toLowerCase()){
+                    switch (currency.toLowerCase()){
                         case "usd":
-                            account.getWallet().setUSD(ur.getAccount_source().getWallet().getUSD());
+                            account.getWallet().setUSD(wd.getUSD());
                             break;
                         case "cny":
-                            account.getWallet().setCNY(ur.getAccount_source().getWallet().getCNY());
+                            account.getWallet().setCNY(wd.getCNY());
                             break;
                         case "thb":
-                            account.getWallet().setTHB(ur.getAccount_source().getWallet().getTHB());
+                            account.getWallet().setTHB(wd.getTHB());
                             break;
                         case "eur":
-                            account.getWallet().setEUR(ur.getAccount_source().getWallet().getEUR());
+                            account.getWallet().setEUR(wd.getEUR());
                             break;
                         case "jpy":
-                            account.getWallet().setJPY(ur.getAccount_source().getWallet().getJPY());
+                            account.getWallet().setJPY(wd.getJPY());
                             break;
                         case "sgd":
-                            account.getWallet().setSGD(ur.getAccount_source().getWallet().getSGD());
+                            account.getWallet().setSGD(wd.getSGD());
                             break;
                         default:
                             throw new ResourceNotFoundException("Wrong currency");
                     }
                     return accountRepositories.save(account);
-                }).orElseThrow(() -> new ResourceNotFoundException("Account not found with id " + ur.getAccount_source().getId()));
+                }).orElseThrow(() -> new ResourceNotFoundException("Account not found with id " + id));
     }
 
-    private void deduct(UserRequest ur) {
-        accountRepositories.findById(ur.getAccount_source().getId())
+    private void deduct(Wallet wd, String currency, int id) {
+        accountRepositories.findById(id)
                 .map(account -> {
-                    switch (ur.getCurrency_source().toLowerCase()){
+                    switch (currency.toLowerCase()){
                         case "usd":
-                            account.getWallet().setUSD(ur.getAccount_source().getWallet().getUSD());
+                            account.getWallet().setUSD(wd.getUSD());
                             break;
                         case "cny":
-                            account.getWallet().setCNY(ur.getAccount_source().getWallet().getCNY());
+                            account.getWallet().setCNY(wd.getCNY());
                             break;
                         case "thb":
-                            account.getWallet().setTHB(ur.getAccount_source().getWallet().getTHB());
+                            account.getWallet().setTHB(wd.getTHB());
                             break;
                         case "eur":
-                            account.getWallet().setEUR(ur.getAccount_source().getWallet().getEUR());
+                            account.getWallet().setEUR(wd.getEUR());
                             break;
                         case "jpy":
-                            account.getWallet().setJPY(ur.getAccount_source().getWallet().getJPY());
+                            account.getWallet().setJPY(wd.getJPY());
                             break;
                         case "sgd":
-                            account.getWallet().setSGD(ur.getAccount_source().getWallet().getSGD());
+                            account.getWallet().setSGD(wd.getSGD());
                             break;
                         default:
                             throw new ResourceNotFoundException("Wrong currency");
                     }
                     return accountRepositories.save(account);
-                }).orElseThrow(() -> new ResourceNotFoundException("Account not found with id " + ur.getAccount_source().getWallet()));
+                }).orElseThrow(() -> new ResourceNotFoundException("Account not found with id " + id));
     }
-
-
 
 }
 
