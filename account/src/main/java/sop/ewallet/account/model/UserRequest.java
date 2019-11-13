@@ -1,33 +1,49 @@
 package sop.ewallet.account.model;
 
 public class UserRequest {
-    private int id_origin;
-    private int id_dest;
+    private Boolean status;
+    private String action;
     private double balance;
     private String currency_origin;
     private String currency_dest;
+    private Account account_source;
+    private Account account_destination;
 
     public UserRequest(){}
-    public UserRequest(int id_origin, double balance, String currency_origin) {
-        this.id_origin = id_origin;
+
+    public UserRequest(Boolean status, String action, double balance, String currency_origin, String currency_dest, Account account_source) {
+        this.status = status;
+        this.action = action;
         this.balance = balance;
-        this.currency_origin = currency_origin;
+        this.currency_origin = currency_origin.toLowerCase();
+        this.currency_dest = currency_dest.toLowerCase();
+        this.account_source = account_source;
     }
 
-    public UserRequest(int id_origin, int id_dest, double balance, String currency_origin, String currency_dest) {
-        this.id_origin = id_origin;
-        this.id_dest = id_dest;
+    public UserRequest(Boolean status, String action, double balance, String currency_origin, String currency_dest, Account account_source, Account account_destination) {
+        this.status = status;
+        this.action = action;
         this.balance = balance;
-        this.currency_origin = currency_origin;
-        this.currency_dest = currency_dest;
+        this.currency_origin = currency_origin.toLowerCase();
+        this.currency_dest = currency_dest.toLowerCase();
+        this.account_source = account_source;
+        this.account_destination = account_destination;
     }
 
-    public int getId_origin() {
-        return id_origin;
+    public Boolean getStatus() {
+        return status;
     }
 
-    public void setId_origin(int id_origin) {
-        this.id_origin = id_origin;
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
     }
 
     public double getBalance() {
@@ -54,8 +70,19 @@ public class UserRequest {
         this.currency_dest = currency_dest;
     }
 
-    public int getId_dest() { return id_dest; }
+    public Account getAccount_source() {
+        return account_source;
+    }
 
-    public void setId_dest(int id_dest) { this.id_dest = id_dest; }
+    public void setAccount_source(Account account_source) {
+        this.account_source = account_source;
+    }
 
+    public Account getAccount_destination() {
+        return account_destination;
+    }
+
+    public void setAccount_destination(Account account_destination) {
+        this.account_destination = account_destination;
+    }
 }

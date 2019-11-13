@@ -10,6 +10,4 @@ import sop.ewallet.account.model.Account;
 @Repository
 public interface AccountRepositories extends JpaRepository<Account, Integer> {
 
-    @Query(value = "SELECT CNY from Account acc where acc.ac_id = :user")
-    double cruMoney(@Param("user") int id);
 }

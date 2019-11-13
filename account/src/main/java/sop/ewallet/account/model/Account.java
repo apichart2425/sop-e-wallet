@@ -1,54 +1,57 @@
 package sop.ewallet.account.model;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import com.vladmihalcea.hibernate.type.array.IntArrayType;
+import com.vladmihalcea.hibernate.type.array.StringArrayType;
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import com.vladmihalcea.hibernate.type.json.JsonNodeBinaryType;
+import com.vladmihalcea.hibernate.type.json.JsonNodeStringType;
+import com.vladmihalcea.hibernate.type.json.JsonStringType;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "account")
-public class Account {
+@TypeDefs({
+        @TypeDef(name = "string-array", typeClass = StringArrayType.class),
+        @TypeDef(name = "int-array", typeClass = IntArrayType.class),
+        @TypeDef(name = "json", typeClass = JsonStringType.class),
+        @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class),
+        @TypeDef(name = "jsonb-node", typeClass = JsonNodeBinaryType.class),
+        @TypeDef(name = "json-node", typeClass = JsonNodeStringType.class),
+})
+public class Account{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int ac_id;
 
-    @NotNull(message = "balance is required")
-    @Min(0)
-    private double USD;
-    @NotNull(message = "balance is required")
-    @Min(0)
-    private double THB;
-    @NotNull(message = "balance is required")
-    @Min(0)
-    private double JPY;
-    @NotNull(message = "balance is required")
-    @Min(0)
-    private double CNY;
-    @NotNull(message = "balance is required")
-    @Min(0)
-    private double EUR;
-    @NotNull(message = "balance is required")
-    @Min(0)
-    private double SGD;
+    @Type(type = "jsonb")
+    @Column(columnDefinition = "jsonb")
+    private Wallet wallet;
+
 
 
 //constructor
     public Account(int ac_id){
         this.ac_id = ac_id;
-        this.USD = 0;
-        this.THB = 0;
-        this.EUR = 0;
-        this.CNY = 0;
-        this.JPY = 0;
-        this.SGD = 0;
+        this.wallet = new Wallet();
     }
 
     public Account() {
-
+        this.wallet = new Wallet();
     }
 
+    public Wallet getWallet() {
+        return wallet;
+    }
 
+    public void setWallet(Wallet wallet) {
+        this.wallet = wallet;
+    }
 
     public int getAc_id() {
         return ac_id;
@@ -58,52 +61,5 @@ public class Account {
         this.ac_id = ac_id;
     }
 
-    public double getUSD() {
-        return USD;
-    }
-    public void setUSD(double USD) { this.USD = USD; }
 
-    public void getUSD(double USD) {
-        this.USD = USD;
-    }
-
-    public double getTHB() {
-        return THB;
-    }
-
-    public void setTHB(double THB) {
-        this.THB = THB;
-    }
-
-    public double getJPY() {
-        return JPY;
-    }
-
-    public void setJPY(double JPY) {
-        this.JPY = JPY;
-    }
-
-    public double getCNY() {
-        return CNY;
-    }
-
-    public void setCNY(double CNY) {
-        this.CNY = CNY;
-    }
-
-    public double getEUR() {
-        return EUR;
-    }
-
-    public void setEUR(double EUR) {
-        this.EUR = EUR;
-    }
-
-    public double getSGD() {
-        return SGD;
-    }
-
-    public void setSGD(double SGD) {
-        this.SGD = SGD;
-    }
 }
