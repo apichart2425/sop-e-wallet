@@ -1,14 +1,13 @@
 package sop.service.transactions.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+//import javafx.beans.DefaultProperty;
+//import jdk.internal.jline.internal.Nullable;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.Date;
 
 @Entity
@@ -20,10 +19,10 @@ public class Log {
     private Long id;
 
     @NotNull(message = "account_source is required")
-    public int account_source;
+    public long account_source;
 
 //    @NotNull(message = "account_destination is required")
-    public int account_destination;
+    public long account_destination;
 
     @NotNull(message = "balance is required")
     @Min(0)
@@ -53,19 +52,19 @@ public class Log {
         this.id = id;
     }
 
-    public int getAccount_source() {
+    public long getAccount_source() {
         return account_source;
     }
 
-    public void setAccount_source(int account_source) {
+    public void setAccount_source(long account_source) {
         this.account_source = account_source;
     }
 
-    public int getAccount_destination() {
+    public long getAccount_destination() {
         return account_destination;
     }
 
-    public void setAccount_destination(int account_destination) {
+    public void setAccount_destination(long account_destination) {
         this.account_destination = account_destination;
     }
 

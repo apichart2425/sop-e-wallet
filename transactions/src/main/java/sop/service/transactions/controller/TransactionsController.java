@@ -53,66 +53,50 @@ public class TransactionsController {
 
     @PostMapping("/withdraw")
     public AccountWallet withdraw(@Valid @RequestBody AccountWallet obj) {
-        return  transactionMethod.withdraw(obj);
-//        return logRepository.save(log_witdraw);
+        AccountWallet data = transactionMethod.withdraw(obj);
+        if(data.getStatus()){
+            Log log = new Log();
+            log.setBalance(data.getBalance());
+            log.setAccount_source(data.getAccountSource().getID());
+            log.setAccount_destination(data.getAccountSource().getID());
+            log.setCurrency_source(data.getCurrencySource().toUpperCase());
+            log.setService(data.getAction());
+            logRepository.save(log);
+        }
+        return data;
     }
 
     @PostMapping("/deposit")
     public AccountWallet deposit(@Valid @RequestBody AccountWallet obj) throws IOException {
-        return  transactionMethod.deposit(obj);
+        AccountWallet data = transactionMethod.deposit(obj);
+        if(data.getStatus()){
+            Log log = new Log();
+            log.setBalance(data.getBalance());
+            log.setAccount_source(data.getAccountSource().getID());
+            log.setAccount_destination(data.getAccountSource().getID());
+            log.setCurrency_source(data.getCurrencySource().toUpperCase());
+            log.setCurrency_destination(data.getCurrencyDestination().toUpperCase());
+            log.setService(data.getAction());
+            logRepository.save(log);
+        }
+        return data;
     }
 
     @PostMapping("/transfer")
     public AccountWallet transfer(@Valid @RequestBody AccountWallet obj) throws IOException {
-        return  transactionMethod.transfer(obj);
-    }
+        AccountWallet data =   transactionMethod.transfer(obj);
+        if(data.getStatus()){
+            Log log = new Log();
+            log.setBalance(data.getBalance());
+            log.setAccount_source(data.getAccountSource().getID());
+            log.setAccount_destination(data.getAccountDestination().getID());
+            log.setCurrency_source(data.getCurrencySource().toUpperCase());
+            log.setCurrency_destination(data.getCurrencyDestination().toUpperCase());
+            log.setService(data.getAction());
+            logRepository.save(log);
+        }
+        return  data;
 
-
-    @GetMapping("/test2")
-    public MapRate test2(){
-        String exchangeUrl = "http://localhost:3000/services/exchange?base="+ "EUR";
-        MapRate response_currency = restTemplate.getForObject(exchangeUrl, MapRate.class);
-        return response_currency;
     }
 }
-
-
-//    @DeleteMapping("/employees/{id}")
-//    public Map<String, Boolean> deleteEmployee(@PathVariable(value = "id") Long employeeId)
-//            throws ResourceNotFoundException {
-//        Employee employee = employeeRepository.findById(employeeId)
-//                .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
-//
-//        employeeRepository.delete(employee);
-//        Map<String, Boolean> response = new HashMap<>();
-//        response.put("deleted", Boolean.TRUE);
-//        return response;
-//    }
-
-
-//    @PutMapping("/deposit")
-//    public ResponseEntity<Employee> updateEmployee(@PathVariable(value = "id") Long employeeId,
-//                                                   @Valid @RequestBody Employee employeeDetails) throws ResourceNotFoundException {
-//        Employee employee = employeeRepository.findById(employeeId)
-//                .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
-//
-//        employee.setEmailId(employeeDetails.getEmailId());
-//        employee.setLastName(employeeDetails.getLastName());
-//        employee.setFirstName(employeeDetails.getFirstName());
-//        final Employee updatedEmployee = employeeRepository.save(employee);
-//        return ResponseEntity.ok(updatedEmployee);
-//    }
-
-//    @PutMapping("/transfer")
-//    public ResponseEntity<Employee> updateEmployee(@PathVariable(value = "id") Long employeeId,
-//                                                   @Valid @RequestBody Employee employeeDetails) throws ResourceNotFoundException {
-//        Employee employee = employeeRepository.findById(employeeId)
-//                .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
-//
-//        employee.setEmailId(employeeDetails.getEmailId());
-//        employee.setLastName(employeeDetails.getLastName());
-//        employee.setFirstName(employeeDetails.getFirstName());
-//        final Employee updatedEmployee = employeeRepository.save(employee);
-//        return ResponseEntity.ok(updatedEmployee);
-//    }
 
