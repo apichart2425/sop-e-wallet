@@ -43,12 +43,17 @@ public class TransactionsController {
         return logRepository.findAll();
     }
 
-    @GetMapping("/log/{id}")
-    public ResponseEntity<Log> getEmployeeById(@PathVariable(value = "id") long log_id)
+    @GetMapping("/log/index/{id}")
+    public ResponseEntity<Log> getById(@PathVariable(value = "id") long log_id)
             throws ResourceNotFoundException {
         Log log_data = logRepository.findById(log_id)
                 .orElseThrow(() -> new ResourceNotFoundException("Id not found for this id :: " + log_id));
         return ResponseEntity.ok().body(log_data);
+    }
+
+    @GetMapping("/log/profile/{id}")
+    public List<Log> getProfileById(@PathVariable(value = "id") long log_id){
+        return logRepository.findTransectionProfileById(log_id);
     }
 
     @PostMapping("/withdraw")
