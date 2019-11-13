@@ -5,12 +5,11 @@ const cron = require('node-cron');
 const app = express()
 let currency = {}
 let list_currency = ['USD', 'THB', 'JPY', 'CNY', 'EUR', 'SGD']
-let base = "THB"
 
 //  set schedule fetch_one_hours()
 let task = cron.schedule('0 0 */1 * * *', () => {
   console.log('\nRunning a task every 1 hour');
-  fetch_one_hours(base)
+  fetch_one_hours()
 });
 task.start()
 
@@ -42,7 +41,7 @@ app.get('/', (req, res) => {
 let server = app.listen(3000, function () {
   let port = server.address().port
   console.log('Listening at port %s', port)
-  fetch_one_hours(base)
+  fetch_one_hours()
   console.log("Start!")
 });
 
