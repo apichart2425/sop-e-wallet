@@ -52,13 +52,13 @@ public class TransactionsController {
     }
 
     @PostMapping("/withdraw")
-    public ActionTransaction withdraw(@Valid @RequestBody ActionTransaction obj) {
+    public AccountWallet withdraw(@Valid @RequestBody AccountWallet obj) {
         return  transactionMethod.withdraw(obj);
 //        return logRepository.save(log_witdraw);
     }
 
     @PostMapping("/deposit")
-    public ActionTransaction deposit(@Valid @RequestBody ActionTransaction obj) throws IOException {
+    public AccountWallet deposit(@Valid @RequestBody AccountWallet obj) throws IOException {
         return  transactionMethod.deposit(obj);
     }
 
