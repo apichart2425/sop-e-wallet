@@ -43,14 +43,6 @@ public class TransactionMethod {
                 jobj.setStatus(false);
             }
         }
-//        if(true) {
-//            System.out.println("save data");
-//            new_log.setBalance(blance);
-//            new_log.setAccount_source(source_ID);
-//            new_log.setCurrency_source(currency_source.toUpperCase());
-//            new_log.setService(jobj.getAction());
-//            logRepository.save(new_log);
-//        }
         return jobj;
     }
 

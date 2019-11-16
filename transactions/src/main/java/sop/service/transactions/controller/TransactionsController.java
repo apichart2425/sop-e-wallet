@@ -59,49 +59,55 @@ public class TransactionsController {
     @PostMapping("/withdraw")
     public AccountWallet withdraw(@Valid @RequestBody AccountWallet obj) {
         AccountWallet data = transactionMethod.withdraw(obj);
-        if(data.getStatus()){
-            Log log = new Log();
-            log.setBalance(data.getBalance());
-            log.setAccount_source(data.getAccountSource().getID());
-            log.setAccount_destination(data.getAccountSource().getID());
-            log.setCurrency_source(data.getCurrencySource().toUpperCase());
-            log.setService(data.getAction());
-            logRepository.save(log);
-        }
         return data;
     }
 
     @PostMapping("/deposit")
     public AccountWallet deposit(@Valid @RequestBody AccountWallet obj) throws IOException {
         AccountWallet data = transactionMethod.deposit(obj);
-        if(data.getStatus()){
-            Log log = new Log();
-            log.setBalance(data.getBalance());
-            log.setAccount_source(data.getAccountSource().getID());
-            log.setAccount_destination(data.getAccountSource().getID());
-            log.setCurrency_source(data.getCurrencySource().toUpperCase());
-            log.setCurrency_destination(data.getCurrencyDestination().toUpperCase());
-            log.setService(data.getAction());
-            logRepository.save(log);
-        }
         return data;
     }
 
     @PostMapping("/transfer")
     public AccountWallet transfer(@Valid @RequestBody AccountWallet obj) throws IOException {
         AccountWallet data =   transactionMethod.transfer(obj);
-        if(data.getStatus()){
+        return  data;
+    }
+
+    @PostMapping("/saveLog")
+    public AccountWallet save(@Valid @RequestBody AccountWallet obj) throws IOException {
+
+        if(obj.getStatus() && obj.getAction().equals("transfer")){
             Log log = new Log();
-            log.setBalance(data.getBalance());
-            log.setAccount_source(data.getAccountSource().getID());
-            log.setAccount_destination(data.getAccountDestination().getID());
-            log.setCurrency_source(data.getCurrencySource().toUpperCase());
-            log.setCurrency_destination(data.getCurrencyDestination().toUpperCase());
-            log.setService(data.getAction());
+            log.setBalance(obj.getBalance());
+            log.setAccount_source(obj.getAccountSource().getID());
+            log.setAccount_destination(obj.getAccountDestination().getID());
+            log.setCurrency_source(obj.getCurrencySource().toUpperCase());
+            log.setCurrency_destination(obj.getCurrencyDestination().toUpperCase());
+            log.setService(obj.getAction());
+            logRepository.save(log);
+            return  obj;
+        }
+        else if (obj.getStatus() && obj.getAction().equals("withdraw")){
+            Log log = new Log();
+            log.setBalance(obj.getBalance());
+            log.setAccount_source(obj.getAccountSource().getID());
+            log.setAccount_destination(obj.getAccountSource().getID());
+            log.setCurrency_source(obj.getCurrencySource().toUpperCase());
+            log.setService(obj.getAction());
             logRepository.save(log);
         }
-        return  data;
-
+        else if (obj.getStatus() && obj.getAction().equals("deposit")){
+            Log log = new Log();
+            log.setBalance(obj.getBalance());
+            log.setAccount_source(obj.getAccountSource().getID());
+            log.setAccount_destination(obj.getAccountSource().getID());
+            log.setCurrency_source(obj.getCurrencySource().toUpperCase());
+            log.setCurrency_destination(obj.getCurrencyDestination().toUpperCase());
+            log.setService(obj.getAction());
+            logRepository.save(log);
+        }
+        return  null;
     }
 }
 
