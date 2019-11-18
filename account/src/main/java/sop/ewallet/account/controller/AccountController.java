@@ -8,12 +8,13 @@ import sop.ewallet.account.model.Account;
 import sop.ewallet.account.model.UserRequest;
 import sop.ewallet.account.model.Wallet;
 import sop.ewallet.account.repositories.AccountRepositories;
+import sop.ewallet.account.repositories.ActionNotMatchingException;
 import sop.ewallet.account.repositories.ResourceNotFoundException;
 
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/account")
+@RequestMapping("/")
 public class AccountController {
 //    Repositories
     @Autowired
@@ -24,6 +25,12 @@ public class AccountController {
 //        this.restTemplate = restTemplateBuilder.build();
 //    }
 
+    private void saveLog(UserRequest ur){
+        System.out.println("Save Transaction");
+        String url = "http://localhost:9634/saveLog";
+        this.restTemplate.postForObject(url, ur,UserRequest.class);
+    }
+
     private UserRequest sentRequest(UserRequest ur, String action){
         ur.getAccount_source().setWallet(accountRepositories.getOne(ur.getAccount_source().getId()).getWallet());
         System.out.println(ur.getAccount_source().getId());
@@ -31,17 +38,17 @@ public class AccountController {
         String url;
         switch (ur.getAction()){
             case "deposit":
-                url = "http://localhost:9634/service/transaction/deposit";
+                url = "http://localhost:9634/deposit";
                 break;
             case "withdraw":
-                url = "http://localhost:9634/service/transaction/withdraw";
+                url = "http://localhost:9634/withdraw";
                 break;
             case "transfer":
                 ur.getAccount_destination().setWallet(accountRepositories.getOne(ur.getAccount_destination().getId()).getWallet());
-                url = "http://localhost:9634/service/transaction/transfer";
+                url = "http://localhost:9634/transfer";
                 break;
             default:
-                url = "http://localhost:9634/service/transaction";
+                url = "http://localhost:9634/transaction";
         }
 
         UserRequest response = this.restTemplate.postForObject(url, ur,UserRequest.class);
@@ -65,25 +72,46 @@ public class AccountController {
     }
 //
     @PostMapping(value = "/deposit")
-    public Account deposit(@RequestBody UserRequest ur){
+    public Account deposit(@RequestBody UserRequest ur) throws ActionNotMatchingException {
 //        RequestAction re = new RequestAction("DP", ur.getBalance(), ur.getCurrency_origin(), accountRepositories.getOne((long) ur.getId()));
+        if(!ur.getAction().equals("deposit")){
+            ur.setStatus(false);
+            throw new ActionNotMatchingException();
+        }
         UserRequest nur = sentRequest(ur, "deposit");
-        induct(nur.getAccount_source().getWallet(), ur.getCurrency_destination(), ur.getAccount_source().getId());
+        if (nur.getStatus() && nur.getAction().equals("deposit")){
+            induct(nur.getAccount_source().getWallet(), ur.getCurrency_destination(), ur.getAccount_source().getId());
+            saveLog(nur);
+        }
         return nur.getAccount_source();
     }
 //
     @PostMapping(value = "/withdraw")
-    public Account withdraw(@RequestBody UserRequest ur) {
+    public Account withdraw(@RequestBody UserRequest ur) throws ActionNotMatchingException {
+        if(!ur.getAction().equals("withdraw")){
+            ur.setStatus(false);
+            throw new ActionNotMatchingException();
+        }
         UserRequest nur = sentRequest(ur, "withdraw");
-        deduct(nur.getAccount_source().getWallet(), ur.getCurrency_source(), ur.getAccount_source().getId());
+        if (nur.getStatus() && nur.getAction().equals("withdraw")) {
+            deduct(nur.getAccount_source().getWallet(), ur.getCurrency_source(), ur.getAccount_source().getId());
+            saveLog(nur);
+        }
         return nur.getAccount_source();
     }
 //
     @PostMapping (value = "/transfer")
-    public Account[] transfer(@RequestBody UserRequest ur){
+    public Account[] transfer(@RequestBody UserRequest ur) throws ActionNotMatchingException {
+        if(!ur.getAction().equals("transfer")){
+            ur.setStatus(false);
+            throw new ActionNotMatchingException();
+        }
         UserRequest nur = sentRequest(ur,"transfer");
-        deduct(nur.getAccount_source().getWallet(), nur.getCurrency_source(), nur.getAccount_source().getId());
-        induct(nur.getAccount_destination().getWallet(), nur.getCurrency_destination(), nur.getAccount_destination().getId());
+        if (nur.getStatus() && nur.getAction().equals("transfer")) {
+            deduct(nur.getAccount_source().getWallet(), nur.getCurrency_source(), nur.getAccount_source().getId());
+            induct(nur.getAccount_destination().getWallet(), nur.getCurrency_destination(), nur.getAccount_destination().getId());
+            saveLog(nur);
+        }
         return new Account[]{nur.getAccount_source(), nur.getAccount_destination()};
     }
 //
