@@ -6,3 +6,9 @@ database:
   url: postgresql://postgres/authentication
   username: authentication
   password: ZYcTCYwRLmYZ8y2h
+
+service:
+  account: http://account:8080
+  authentication: http://authentication:8080
+  transaction: http://transaction:8080
+  exchange: http://exchange:3000
