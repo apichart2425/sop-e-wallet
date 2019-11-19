@@ -18,6 +18,10 @@ spec:
         paths:
           - path: /
             backend:
+                serviceName: frontend
+                servicePort: 80
+          - path: /services
+            backend:
               serviceName: zuul
               servicePort: 9090
     - host: pgadmin.wiput.me
