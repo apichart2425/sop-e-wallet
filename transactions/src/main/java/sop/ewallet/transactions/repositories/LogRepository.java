@@ -1,10 +1,9 @@
-package sop.service.transactions.repositories;
+package sop.ewallet.transactions.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import sop.service.transactions.model.Log;
+import sop.ewallet.transactions.model.Log;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package sop.service.transactions.controller;
+package sop.ewallet.transactions.controller;
 
 //https://www.javaguides.net/2019/01/springboot-postgresql-jpa-hibernate-crud-restful-api-tutorial.html
 
@@ -7,11 +7,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,14 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-import sop.service.transactions.method.TransactionMethod;
-import sop.service.transactions.model.*;
-import sop.service.transactions.repositories.LogRepository;
-import sop.service.transactions.repositories.ResourceNotFoundException;
-
-//import net.guides.springboot2.springboot2jpacrudexample.exception.ResourceNotFoundException;
-//import net.guides.springboot2.springboot2jpacrudexample.model.Employee;
-//import net.guides.springboot2.springboot2jpacrudexample.repository.EmployeeRepository;
+import sop.ewallet.transactions.method.TransactionMethod;
+import sop.ewallet.transactions.model.*;
+import sop.ewallet.transactions.repositories.LogRepository;
+import sop.ewallet.transactions.repositories.ResourceNotFoundException;
 
 @RestController
 @RequestMapping("/")
@@ -58,24 +51,21 @@ public class TransactionsController {
 
     @PostMapping("/withdraw")
     public AccountWallet withdraw(@Valid @RequestBody AccountWallet obj) {
-        AccountWallet data = transactionMethod.withdraw(obj);
-        return data;
+        return transactionMethod.withdraw(obj);
     }
 
     @PostMapping("/deposit")
-    public AccountWallet deposit(@Valid @RequestBody AccountWallet obj) throws IOException {
-        AccountWallet data = transactionMethod.deposit(obj);
-        return data;
+    public AccountWallet deposit(@Valid @RequestBody AccountWallet obj) {
+        return transactionMethod.deposit(obj);
     }
 
     @PostMapping("/transfer")
-    public AccountWallet transfer(@Valid @RequestBody AccountWallet obj) throws IOException {
-        AccountWallet data =   transactionMethod.transfer(obj);
-        return  data;
+    public AccountWallet transfer(@Valid @RequestBody AccountWallet obj) {
+        return transactionMethod.transfer(obj);
     }
 
     @PostMapping("/saveLog")
-    public AccountWallet save(@Valid @RequestBody AccountWallet obj) throws IOException {
+    public AccountWallet save(@Valid @RequestBody AccountWallet obj) {
 
         if(obj.getStatus() && obj.getAction().equals("transfer")){
             Log log = new Log();
@@ -107,7 +97,7 @@ public class TransactionsController {
             log.setService(obj.getAction());
             logRepository.save(log);
         }
-        return  null;
+        return null;
     }
 }
 

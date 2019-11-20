@@ -1,4 +1,4 @@
-package sop.service.transactions.model;
+package sop.ewallet.transactions.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

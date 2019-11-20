@@ -1,23 +1,20 @@
-package sop.service.transactions.method;
+package sop.ewallet.transactions.method;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.client.RestTemplate;
-import sop.service.transactions.model.*;
-import sop.service.transactions.repositories.LogRepository;
+import sop.ewallet.transactions.model.*;
+import sop.ewallet.transactions.repositories.LogRepository;
 
-import java.io.IOException;
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public class TransactionMethod {
 
     @Autowired
     private LogRepository logRepository;
+
+    @Value("service.exchange")
+    private String exchangeUrl;
 
     RestTemplate restTemplate = new RestTemplate();
 
@@ -54,7 +51,7 @@ public class TransactionMethod {
         String currency_source = jobj.getCurrencySource();
         String currency_destination = jobj.getCurrencyDestination();
 
-        String exchangeUrl = "http://localhost:3000/?base=" + currency_source.toUpperCase();
+        String exchangeUrl = this.exchangeUrl + "/?base=" + currency_source.toUpperCase();
         MapRate response_currency = restTemplate.getForObject(exchangeUrl, MapRate.class);
 
         double rate = response_currency.getPayload().get(currency_destination.toUpperCase());
@@ -73,15 +70,6 @@ public class TransactionMethod {
                 jobj.setStatus(false);
             }
         }
-//        if(true) {
-//            System.out.println("save data");
-//            new_log.setBalance(blance);
-//            new_log.setCurrency_source(currency_source);
-//            new_log.setAccount_source(source_ID);
-//            new_log.setService(jobj.getAction());
-//            new_log.setCurrency_source(currency_source.toUpperCase());
-//            logRepository.save(new_log);
-//        }
         return jobj;
     }
 
@@ -97,7 +85,7 @@ public class TransactionMethod {
         Map<String, Double> destination_wallet = jobj.getAccountDestination().getWallets();
         String currency_destination = jobj.getCurrencyDestination();
 
-        String exchangeUrl = "http://localhost:3000/?base=" + currency_source.toLowerCase();
+        String exchangeUrl = this.exchangeUrl + "/?base=" + currency_source.toLowerCase();
         MapRate response_currency = restTemplate.getForObject(exchangeUrl, MapRate.class);
 
         double rate = response_currency.getPayload().get(currency_destination.toUpperCase());
@@ -116,15 +104,6 @@ public class TransactionMethod {
                 jobj.setStatus(false);
             }
         }
-//        if(true) {
-//            new_log.setBalance(blance);
-//            new_log.setAccount_source(source_ID);
-//            new_log.setAccount_destination(destination_ID);
-//            new_log.setCurrency_source(currency_source.toUpperCase());
-//            new_log.setCurrency_destination(currency_destination.toUpperCase());
-//            new_log.setService(jobj.getAction());
-//            logRepository.save(new_log);
-//        }
         return jobj;
     }
 }

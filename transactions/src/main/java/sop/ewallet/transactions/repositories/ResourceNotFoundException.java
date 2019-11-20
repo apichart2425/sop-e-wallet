@@ -1,4 +1,4 @@
-package sop.service.transactions.repositories;
+package sop.ewallet.transactions.repositories;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

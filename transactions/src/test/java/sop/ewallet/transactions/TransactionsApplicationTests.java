@@ -1,4 +1,4 @@
-package sop.service.transactions;
+package sop.ewallet.transactions;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

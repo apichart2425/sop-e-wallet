@@ -1,6 +1,5 @@
-package sop.service.transactions.model;
+package sop.ewallet.transactions.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 //import javafx.beans.DefaultProperty;
 //import jdk.internal.jline.internal.Nullable;
 import org.hibernate.annotations.CreationTimestamp;
