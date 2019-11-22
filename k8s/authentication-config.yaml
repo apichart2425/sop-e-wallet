@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: authentication
+  namespace: ewallet
+data:
+  DATABASE_URL: "postgresql://postgres/authentication"
+  DATABASE_USERNAME: "authentication"
+  DATABASE_PASSWORD: "ZYcTCYwRLmYZ8y2h"

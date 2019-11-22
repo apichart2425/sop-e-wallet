@@ -1,0 +1,30 @@
+server:
+  port: 9090
+spring:
+  application:
+    name: zuul
+  profiles:
+    active: prod
+  devtools:
+    add-properties: false
+
+zuul:
+  routes:
+    authentication:
+      path: '/auth/**'
+      url: "http://authentication:8080"
+      sensitiveHeaders:
+    exchange:
+      path: '/exchange/**'
+      url: "http://exchange:3000"
+      sensitiveHeaders:
+    account:
+      path: '/account/**'
+      url: "http://account:8080"
+      sensitiveHeaders:
+
+  prefix: '/services'
+
+ribbon:
+  eureka:
+    enabled: false

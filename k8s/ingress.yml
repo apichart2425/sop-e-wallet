@@ -1,0 +1,33 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress
+  namespace: ewallet
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    certmanager.k8s.io/cluster-issuer: letsencrypt
+spec:
+  tls:
+    - hosts:
+        - sop.wiput.me
+        - pgadmin.wiput.me
+      secretName: cert
+  rules:
+    - host: sop.wiput.me
+      http:
+        paths:
+          - path: /
+            backend:
+                serviceName: frontend
+                servicePort: 80
+          - path: /services
+            backend:
+              serviceName: zuul
+              servicePort: 9090
+    - host: pgadmin.wiput.me
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: pgadmin
+              servicePort: 80

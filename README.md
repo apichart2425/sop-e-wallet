@@ -54,6 +54,7 @@
 
 ## Currency Exchange Service
 - `/services/exchange`
+- `/services/exchange?base=<u>THB</u>`
 
 Remark : sample request and response coming soon
 

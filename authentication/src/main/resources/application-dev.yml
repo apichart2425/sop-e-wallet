@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: authentication
+  jpa:
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+  datasource:
+    username: ${DATABASE_USERNAME:postgres}
+    password: ${DATABASE_PASSWORD:}
+    url: jdbc:${DATABASE_URL:postgresql://localhost:5432/authentication}
+
+  cloud:
+    config:
+      enabled: false
+      uri: http://config:8888
+  profiles:
+    active: prod
+
+app:
+  jwtSecret: "C&F)J@NcRfUjWnZr4u7x!A%D*G-KaPdSgVkYp2s5v8y/B?E(H+MbQeThWmZq4t6w"
+  jwtExpirationInMs: 604800000
+
