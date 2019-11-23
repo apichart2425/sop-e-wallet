@@ -2,6 +2,8 @@ package sop.ewallet.account;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +17,6 @@ import sop.ewallet.account.response.RequestAction;
 @SpringBootApplication
 public class AccountApplication {
 
-	//	public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 	public static void main(String[] args) {
 		SpringApplication.run(AccountApplication.class, args);
 	}

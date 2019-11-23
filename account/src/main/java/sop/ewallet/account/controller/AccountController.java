@@ -3,6 +3,7 @@ package sop.ewallet.account.controller;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,8 @@ import sop.ewallet.account.model.Wallet;
 import sop.ewallet.account.repositories.AccountRepositories;
 import sop.ewallet.account.repositories.ActionNotMatchingException;
 import sop.ewallet.account.repositories.ResourceNotFoundException;
+import sop.ewallet.account.security.CurrentUser;
+import sop.ewallet.account.security.UserPrincipal;
 
 @RestController
 @RequestMapping("/")
@@ -59,8 +62,15 @@ public class AccountController {
     }
 
     @GetMapping("/")
-    public String hello() {
+    public String index() {
         return "Welcome to You Wallet";
+    }
+
+    @RequestMapping("/me")
+    public ResponseEntity<Long> getUserProfile(@CurrentUser UserPrincipal currentUser) {
+        return ResponseEntity.ok(
+            currentUser.getId()
+        );
     }
 
     @RequestMapping(value = "/info/{id}", method = RequestMethod.GET)

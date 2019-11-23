@@ -26,13 +26,12 @@ public class Account{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    private long userId;
+
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
     private Wallet wallet;
 
-
-
-//constructor
     public Account(int ac_id){
         this.id = ac_id;
         this.wallet = new Wallet();
@@ -58,5 +57,11 @@ public class Account{
         this.id = id;
     }
 
+    public long getUserId() {
+        return userId;
+    }
 
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
 }
