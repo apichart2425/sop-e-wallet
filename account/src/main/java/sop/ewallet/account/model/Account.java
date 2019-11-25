@@ -32,8 +32,8 @@ public class Account{
     @Column(columnDefinition = "jsonb")
     private Wallet wallet;
 
-    public Account(int ac_id){
-        this.id = ac_id;
+    public Account(long userId){
+        this.userId = userId;
         this.wallet = new Wallet();
     }
 

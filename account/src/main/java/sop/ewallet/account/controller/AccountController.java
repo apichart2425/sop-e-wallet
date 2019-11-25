@@ -18,13 +18,15 @@ import sop.ewallet.account.model.Wallet;
 import sop.ewallet.account.repositories.AccountRepositories;
 import sop.ewallet.account.repositories.ActionNotMatchingException;
 import sop.ewallet.account.repositories.ResourceNotFoundException;
+import sop.ewallet.account.response.ApiResponse;
 import sop.ewallet.account.security.CurrentUser;
+import sop.ewallet.account.security.UserDetail;
 import sop.ewallet.account.security.UserPrincipal;
 
 @RestController
 @RequestMapping("/")
 public class AccountController {
-    @Value("service.transaction")
+    @Value("${service.transaction}")
     private String transactionUrl;
 
     @Autowired
@@ -63,14 +65,18 @@ public class AccountController {
 
     @GetMapping("/")
     public String index() {
-        return "Welcome to You Wallet";
+        return "Account Service";
     }
 
-    @RequestMapping("/me")
-    public ResponseEntity<Long> getUserProfile(@CurrentUser UserPrincipal currentUser) {
-        return ResponseEntity.ok(
-            currentUser.getId()
-        );
+    @GetMapping("/me")
+    public ResponseEntity<Long> me(@CurrentUser UserPrincipal currentUser) {
+        System.out.println(transactionUrl);
+        return ResponseEntity.ok(currentUser.getId());
+    }
+
+    @GetMapping("/account")
+    public Optional<Account> getAccount(@CurrentUser UserPrincipal currentUser) {
+        return accountRepositories.findAccountByUserId(currentUser.getId());
     }
 
     @RequestMapping(value = "/info/{id}", method = RequestMethod.GET)
@@ -78,14 +84,20 @@ public class AccountController {
         return accountRepositories.findById(id);
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public Account createDefault(){
-        return accountRepositories.save(new Account());
+    @PostMapping("/create")
+    public ResponseEntity<ApiResponse> createDefault(@CurrentUser UserPrincipal currentUser){
+        Optional<Account> exist = accountRepositories.findAccountByUserId(currentUser.getId());
+        if (exist.isPresent()) {
+            return ResponseEntity.ok(new ApiResponse(false, "This user has already created account"));
+        }
+
+        Account newAccount = accountRepositories.save(new Account(currentUser.getId()));
+
+        return ResponseEntity.ok(new ApiResponse(true, "Created Account Successfully"));
     }
 
     @PostMapping(value = "/deposit")
     public Account deposit(@RequestBody UserRequest ur) throws ActionNotMatchingException {
-//        RequestAction re = new RequestAction("DP", ur.getBalance(), ur.getCurrency_origin(), accountRepositories.getOne((long) ur.getId()));
         if(!ur.getAction().equals("deposit")){
             ur.setStatus(false);
             throw new ActionNotMatchingException();

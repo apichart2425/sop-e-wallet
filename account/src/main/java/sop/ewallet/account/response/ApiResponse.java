@@ -1,4 +1,4 @@
-package sop.ewallet.authentication.payload;
+package sop.ewallet.account.response;
 
 public class ApiResponse {
 
@@ -8,9 +8,6 @@ public class ApiResponse {
   public ApiResponse(Boolean success, String message) {
     this.success = success;
     this.message = message;
-  }
-
-  public ApiResponse() {
   }
 
   public Boolean getSuccess() {

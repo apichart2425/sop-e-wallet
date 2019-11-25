@@ -1,7 +1,11 @@
 package sop.ewallet.authentication.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
@@ -50,6 +55,11 @@ public class AuthenticationController {
 
   @Autowired
   JwtTokenProvider tokenProvider;
+
+  @Value("${service.account}")
+  private String accountUrl;
+
+  private RestTemplate restTemplate = new RestTemplate();
 
   @RequestMapping("/me")
   public ResponseEntity<UserDetailResponse> getUserProfile(@CurrentUser UserPrincipal currentUser) {
@@ -103,6 +113,38 @@ public class AuthenticationController {
     user.setRoles(Collections.singleton(userRole));
 
     User result = userRepository.save(user);
+
+    Authentication authentication = authenticationManager.authenticate(
+        new UsernamePasswordAuthenticationToken(
+            signUpRequest.getUsername(),
+            signUpRequest.getPassword()
+        )
+    );
+
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+
+    String jwt = tokenProvider.generateToken(authentication);
+
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_JSON);
+    headers.set("Authorization", "Bearer " + jwt);
+
+    HttpEntity<String> entity = new HttpEntity<String>(null, headers);
+
+    try {
+      ApiResponse createAccount = this.restTemplate
+          .postForObject(accountUrl + "/create", entity, ApiResponse.class);
+
+      if (createAccount != null && !createAccount.getSuccess()) {
+        userRepository.deleteById(result.getId());
+        return new ResponseEntity<>(new ApiResponse(false, "Error creating account!"),
+            HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+    } catch (Exception e) {
+      userRepository.deleteById(result.getId());
+      return new ResponseEntity<>(new ApiResponse(false, "Error creating account!"),
+          HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
     URI location = ServletUriComponentsBuilder
         .fromCurrentContextPath().path("/api/users/{username}")
