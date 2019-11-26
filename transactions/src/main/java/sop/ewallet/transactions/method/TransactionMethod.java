@@ -2,26 +2,28 @@ package sop.ewallet.transactions.method;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import sop.ewallet.transactions.model.*;
 import sop.ewallet.transactions.repositories.LogRepository;
 
 import java.util.Map;
 
+@Component
 public class TransactionMethod {
+
+    @Value("${service.exchange}")
+    private String exchangeUrl;
 
     @Autowired
     private LogRepository logRepository;
-
-    @Value("service.exchange")
-    private String exchangeUrl;
 
     RestTemplate restTemplate = new RestTemplate();
 
     private Log new_log = new Log();
 
     public AccountWallet withdraw(AccountWallet jobj){
-        double blance = jobj.getBalance();
+        double balance = jobj.getBalance();
 
         long source_ID = jobj.getAccountSource().getID();
         Map<String, Double> source_wallet = jobj.getAccountSource().getWallets();
@@ -29,10 +31,10 @@ public class TransactionMethod {
 
 
         if (jobj.getAction().equals("withdraw")) {
-            if (source_wallet.get(currency_source.toLowerCase()) - blance >= 0) {
+            if (source_wallet.get(currency_source.toLowerCase()) - balance >= 0) {
                 System.out.println("wallet :" + currency_source.toLowerCase());
                 System.out.println(source_wallet.get(currency_source.toLowerCase()));
-                source_wallet.put(currency_source.toLowerCase(), (Double)  source_wallet.get(currency_source.toLowerCase()) - blance);
+                source_wallet.put(currency_source.toLowerCase(), (Double)  source_wallet.get(currency_source.toLowerCase()) - balance);
                 System.out.println("New wallet :" + currency_source.toLowerCase());
                 System.out.println(source_wallet.get(currency_source.toLowerCase()));
                 jobj.setStatus(true);
@@ -44,25 +46,26 @@ public class TransactionMethod {
     }
 
     public AccountWallet deposit(AccountWallet jobj){
-        double blance = jobj.getBalance();
+        double balance = jobj.getBalance();
 
         long source_ID = jobj.getAccountSource().getID();
         Map<String, Double> source_wallet = jobj.getAccountSource().getWallets();
         String currency_source = jobj.getCurrencySource();
         String currency_destination = jobj.getCurrencyDestination();
 
-        String exchangeUrl = this.exchangeUrl + "/?base=" + currency_source.toUpperCase();
-        MapRate response_currency = restTemplate.getForObject(exchangeUrl, MapRate.class);
+        String url = exchangeUrl + "/?base=" + currency_source.toUpperCase();
+        System.out.println(url);
+        MapRate response_currency = restTemplate.getForObject(url, MapRate.class);
 
         double rate = response_currency.getPayload().get(currency_destination.toUpperCase());
-        double new_blance = blance*rate;
+        double new_balance = balance*rate;
         System.out.println(source_wallet);
         if (jobj.getAction().equals("deposit")) {
             System.out.println("deposit");
             if (source_wallet.get(currency_source.toLowerCase()) >= 0) {
                 System.out.println("wallet :" + currency_source.toLowerCase());
                 System.out.println(source_wallet.get(currency_source.toLowerCase()));
-                source_wallet.put(currency_destination.toLowerCase(), (Double) source_wallet.get(currency_source.toLowerCase()) + new_blance);
+                source_wallet.put(currency_destination.toLowerCase(), (Double) source_wallet.get(currency_source.toLowerCase()) + new_balance);
                 System.out.println("New wallet :" + currency_source.toLowerCase());
                 System.out.println(source_wallet.get(currency_destination.toLowerCase()));
                 jobj.setStatus(true);
@@ -75,7 +78,7 @@ public class TransactionMethod {
 
     public AccountWallet transfer(AccountWallet jobj) {
 
-        double blance = jobj.getBalance();
+        double balance = jobj.getBalance();
 
         long source_ID = jobj.getAccountSource().getID();
         Map<String, Double> source_wallet = jobj.getAccountSource().getWallets();
@@ -85,18 +88,18 @@ public class TransactionMethod {
         Map<String, Double> destination_wallet = jobj.getAccountDestination().getWallets();
         String currency_destination = jobj.getCurrencyDestination();
 
-        String exchangeUrl = this.exchangeUrl + "/?base=" + currency_source.toLowerCase();
-        MapRate response_currency = restTemplate.getForObject(exchangeUrl, MapRate.class);
+        String url = exchangeUrl + "/?base=" + currency_source.toLowerCase();
+        MapRate response_currency = restTemplate.getForObject(url, MapRate.class);
 
         double rate = response_currency.getPayload().get(currency_destination.toUpperCase());
-        double new_blance = rate * blance;
+        double new_balance = rate * balance;
 
         if (jobj.getAction().equals("transfer")) {
-            if ((source_wallet.get(currency_source.toLowerCase()) - blance) >= 0) {
+            if ((source_wallet.get(currency_source.toLowerCase()) - balance) >= 0) {
                 System.out.println("wallet :" + currency_source.toLowerCase());
                 System.out.println(source_wallet.get(currency_source.toLowerCase()));
-                source_wallet.put(currency_source.toLowerCase(), (Double) source_wallet.get(currency_source.toLowerCase()) - blance);
-                destination_wallet.put(currency_destination.toLowerCase(), (Double) destination_wallet.get(currency_destination.toLowerCase())+new_blance);
+                source_wallet.put(currency_source.toLowerCase(), (Double) source_wallet.get(currency_source.toLowerCase()) - balance);
+                destination_wallet.put(currency_destination.toLowerCase(), (Double) destination_wallet.get(currency_destination.toLowerCase()) + new_balance);
                 System.out.println("New wallet :" + currency_source.toLowerCase());
                 System.out.println(destination_wallet.get(currency_destination.toLowerCase()));
                 jobj.setStatus(true);
