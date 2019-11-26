@@ -2,3 +2,5 @@ spring:
   cloud:
     config:
       uri: http://config:8888
+      profile: prod
+      fail-fast: true
