@@ -22,6 +22,11 @@ spring:
     active: prod
 
 app:
-  jwtSecret: "C&F)J@NcRfUjWnZr4u7x!A%D*G-KaPdSgVkYp2s5v8y/B?E(H+MbQeThWmZq4t6w"
+  jwtSecret: C&F)J@NcRfUjWnZr4u7x!A%D*G-KaPdSgVkYp2s5v8y/B?E(H+MbQeThWmZq4t6w
   jwtExpirationInMs: 604800000
 
+service:
+  account: http://localhost:8030
+  authentication: http://authentication:8080
+  transaction: http://localhost:9634
+  exchange: http://exchange:3000

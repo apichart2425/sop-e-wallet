@@ -3,13 +3,12 @@ package sop.ewallet.account.model;
 
 import org.springframework.lang.Nullable;
 
-public class UserRequest {
+public class TransactionRequest {
     private Boolean status;
     private String action;
     private double balance;
     private String currency_source;
     private String currency_destination;
-    private int account_source_id;
 
     @Nullable
     private Account account_source;
@@ -17,9 +16,9 @@ public class UserRequest {
     @Nullable
     private Account account_destination;
 
-    public UserRequest(){}
+    public TransactionRequest(){}
 
-    public UserRequest(Boolean status, String action, double balance, String currency_origin, String currency_dest, Account account_source) {
+    public TransactionRequest(Boolean status, String action, double balance, String currency_origin, String currency_dest, Account account_source) {
         this.status = status;
         this.action = action;
         this.balance = balance;
@@ -28,7 +27,7 @@ public class UserRequest {
         this.account_source = account_source;
     }
 
-    public UserRequest(Boolean status, String action, double balance, String currency_origin, String currency_dest, Account account_source, Account account_destination) {
+    public TransactionRequest(Boolean status, String action, double balance, String currency_origin, String currency_dest, Account account_source, Account account_destination) {
         this.status = status;
         this.action = action;
         this.balance = balance;
@@ -36,14 +35,6 @@ public class UserRequest {
         this.currency_destination = currency_dest.toLowerCase();
         this.account_source = account_source;
         this.account_destination = account_destination;
-    }
-
-    public int getAccount_source_id() {
-        return account_source_id;
-    }
-
-    public void setAccount_source_id(int account_source_id) {
-        this.account_source_id = account_source_id;
     }
 
     public Boolean getStatus() {
