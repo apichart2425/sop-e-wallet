@@ -17,8 +17,7 @@ public class RequestAction {
     private Account origin;
     private Account dest;
 
-    public RequestAction(){}
-
+    public RequestAction() {}
 
     public RequestAction(String action, double balance, String currency_origin, Account origin) {
         this.action = action;
