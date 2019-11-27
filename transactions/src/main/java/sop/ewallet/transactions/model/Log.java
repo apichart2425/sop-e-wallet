@@ -1,7 +1,5 @@
 package sop.ewallet.transactions.model;
 
-//import javafx.beans.DefaultProperty;
-//import jdk.internal.jline.internal.Nullable;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -12,36 +10,34 @@ import java.util.Date;
 @Entity
 @Table(name = "log")
 public class Log {
-    //    @Id @GeneratedValue val id: Long ? = null,
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull(message = "account_source is required")
-    public long account_source;
+    private long account_source;
 
-//    @NotNull(message = "account_destination is required")
-    public long account_destination;
+    private long account_destination;
 
     @NotNull(message = "balance is required")
     @Min(0)
-    public double balance;
+    private double balance;
 
     @NotNull(message = "service is required")
-    public String service;
+    private String service;
 
 
     @NotNull(message = "currency_source is required")
-    public String currency_source;
+    private String currency_source;
 
 //    @NotNull(message = "currency_destination is required")
-    public String currency_destination;
+    private String currency_destination;
 
 //    @NotNull(message = "Date(created_on) is required")
     @CreationTimestamp
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
-    public Date created_on;
+    private Date created_on;
 
     public Long getId() {
         return id;
