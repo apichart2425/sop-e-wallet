@@ -91,7 +91,7 @@ public class TransactionsController {
         if (obj.getAction().equals("deposit")) {
             System.out.println("deposit");
             if (source_wallet.get(currency_source.toLowerCase()) >= 0) {
-                source_wallet.put(currency_destination.toLowerCase(), (Double) source_wallet.get(currency_source.toLowerCase()) + new_balance);
+                source_wallet.put(currency_destination.toLowerCase(), (Double) source_wallet.get(currency_destination.toLowerCase()) + new_balance);
                 obj.setStatus(true);
             } else {
                 obj.setStatus(false);
