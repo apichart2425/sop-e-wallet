@@ -15,8 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-import sop.ewallet.transactions.method.TransactionMethod;
 import sop.ewallet.transactions.model.*;
+import sop.ewallet.transactions.payload.ApiResponse;
+import sop.ewallet.transactions.payload.LogRequest;
 import sop.ewallet.transactions.repositories.LogRepository;
 import sop.ewallet.transactions.repositories.ResourceNotFoundException;
 
@@ -31,16 +32,16 @@ public class TransactionsController {
     @Value("${service.exchange}")
     private String exchangeUrl;
 
-    private Log new_log = new Log();
-
     @GetMapping("/")
     public String main() {
         return exchangeUrl;
     }
 
-    @GetMapping("/log")
-    public List<Log> getAllLog() {
-        return logRepository.findAll();
+    @PostMapping("/log")
+    public ResponseEntity<ApiResponse<List<Log>>> getAllLog(@Valid @RequestBody LogRequest logRequest) {
+        return ResponseEntity.ok(
+            new ApiResponse<>(true, logRepository.findTransactionsByUser(logRequest.getSourceId()))
+        );
     }
 
     @GetMapping("/log/index/{id}")
@@ -49,11 +50,6 @@ public class TransactionsController {
         Log log_data = logRepository.findById(log_id)
                 .orElseThrow(() -> new ResourceNotFoundException("Id not found for this id :: " + log_id));
         return ResponseEntity.ok().body(log_data);
-    }
-
-    @GetMapping("/log/profile/{id}")
-    public List<Log> getProfileById(@PathVariable(value = "id") long log_id){
-        return logRepository.findTransectionProfileById(log_id);
     }
 
     @PostMapping("/withdraw")
