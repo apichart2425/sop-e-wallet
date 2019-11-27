@@ -19,7 +19,9 @@ import sop.ewallet.account.model.Wallet;
 import sop.ewallet.account.repositories.AccountRepositories;
 import sop.ewallet.account.repositories.ActionNotMatchingException;
 import sop.ewallet.account.repositories.ResourceNotFoundException;
+import sop.ewallet.account.request.LogRequest;
 import sop.ewallet.account.response.ApiResponse;
+import sop.ewallet.account.response.LogResponse;
 import sop.ewallet.account.security.CurrentUser;
 import sop.ewallet.account.security.UserPrincipal;
 
@@ -69,6 +71,17 @@ public class AccountController {
     @GetMapping("/account")
     public Optional<Account> getAccount(@CurrentUser UserPrincipal currentUser) {
         return accountRepositories.findAccountByUserId(currentUser.getId());
+    }
+
+    @GetMapping("/transactions")
+    public ResponseEntity<LogResponse> getTransactions(@CurrentUser UserPrincipal currentUser) {
+        Account userAccount = accountRepositories.findAccountByUserId(currentUser.getId()).orElseThrow(() -> new ResourceNotFoundException("Account not found"));
+
+        LogRequest request = new LogRequest(userAccount.getId());
+
+        LogResponse response = this.restTemplate.postForObject(transactionUrl + "/log", request,  LogResponse.class);
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/create")
