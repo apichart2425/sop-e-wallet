@@ -9,7 +9,7 @@ public class UserRequest {
     private double balance;
     private String currency_source;
     private String currency_destination;
-    private int account_source_id;
+    private long destination_user_id;
 
     @Nullable
     private Account account_source;
@@ -38,12 +38,12 @@ public class UserRequest {
         this.account_destination = account_destination;
     }
 
-    public int getAccount_source_id() {
-        return account_source_id;
+    public long getDestination_user_id() {
+        return destination_user_id;
     }
 
-    public void setAccount_source_id(int account_source_id) {
-        this.account_source_id = account_source_id;
+    public void setDestination_user_id(long destination_user_id) {
+        this.destination_user_id = destination_user_id;
     }
 
     public Boolean getStatus() {

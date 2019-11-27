@@ -19,7 +19,9 @@ import sop.ewallet.account.model.Wallet;
 import sop.ewallet.account.repositories.AccountRepositories;
 import sop.ewallet.account.repositories.ActionNotMatchingException;
 import sop.ewallet.account.repositories.ResourceNotFoundException;
+import sop.ewallet.account.request.LogRequest;
 import sop.ewallet.account.response.ApiResponse;
+import sop.ewallet.account.response.LogResponse;
 import sop.ewallet.account.security.CurrentUser;
 import sop.ewallet.account.security.UserPrincipal;
 
@@ -42,8 +44,6 @@ public class AccountController {
 
     private TransactionRequest sentRequest(UserRequest ur, String action){
         ur.getAccount_source().setWallet(accountRepositories.getOne(ur.getAccount_source().getId()).getWallet());
-        System.out.println(ur.getAccount_source().getId());
-        System.out.println(ur.getAccount_source().getWallet());
         String url;
         switch (ur.getAction()){
             case "deposit":
@@ -53,7 +53,7 @@ public class AccountController {
                 url = transactionUrl + "/withdraw";
                 break;
             case "transfer":
-                ur.getAccount_destination().setWallet(accountRepositories.getOne(ur.getAccount_destination().getId()).getWallet());
+                ur.getAccount_destination().setWallet(ur.getAccount_destination().getWallet());
                 url = transactionUrl + "/transfer";
                 break;
             default:
@@ -68,20 +68,20 @@ public class AccountController {
         return "Account Service";
     }
 
-    @GetMapping("/me")
-    public ResponseEntity<Long> me(@CurrentUser UserPrincipal currentUser) {
-        System.out.println(transactionUrl);
-        return ResponseEntity.ok(currentUser.getId());
-    }
-
     @GetMapping("/account")
     public Optional<Account> getAccount(@CurrentUser UserPrincipal currentUser) {
         return accountRepositories.findAccountByUserId(currentUser.getId());
     }
 
-    @RequestMapping(value = "/info/{id}", method = RequestMethod.GET)
-    public Optional<Account> info(@PathVariable int id){
-        return accountRepositories.findById(id);
+    @GetMapping("/transactions")
+    public ResponseEntity<LogResponse> getTransactions(@CurrentUser UserPrincipal currentUser) {
+        Account userAccount = accountRepositories.findAccountByUserId(currentUser.getId()).orElseThrow(() -> new ResourceNotFoundException("Account not found"));
+
+        LogRequest request = new LogRequest(userAccount.getId());
+
+        LogResponse response = this.restTemplate.postForObject(transactionUrl + "/log", request,  LogResponse.class);
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/create")
@@ -142,9 +142,10 @@ public class AccountController {
         }
 
         Account userAccount = accountRepositories.findAccountByUserId(currentUser.getId()).orElseThrow(() -> new ResourceNotFoundException("Account not found"));
-        Account destinationAccount = accountRepositories.findById(ur.getAccount_source_id()).orElseThrow(() -> new ResourceNotFoundException("Account not found"));
+        Account destinationAccount = accountRepositories.findAccountByUserId(ur.getDestination_user_id()).orElseThrow(() -> new ResourceNotFoundException("Account not found"));
 
         ur.setAccount_source(userAccount);
+        ur.setAccount_destination(destinationAccount);
 
         TransactionRequest nur = sentRequest(ur,"transfer");
         if (nur.getStatus() && nur.getAction().equals("transfer")) {
