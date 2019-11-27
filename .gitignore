@@ -45,3 +45,4 @@ buildNumber.properties
 **/.mvn/wrapper/maven-wrapper.jar
 node_modules
 **/.idea
+node_modules/
