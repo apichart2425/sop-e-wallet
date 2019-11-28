@@ -20,7 +20,6 @@
 - Deposit money to wallet
 - Withdraw money to external provider
 - Transfer money to another wallet
-- Exchange money with in wallet
 - Payment
 
 ## Account Service
@@ -40,23 +39,35 @@
 ## Transactional Service
 - `/services/transaction/deposit`
 - `/services/transaction/withdraw`
-- `/services/transaction/exahange`
 - `/services/transaction/transfer`
 
+[API Documentation](https://documenter.getpostman.com/view/7432727/SW7f1SDT)
+
 ## Account Service
-- `/services/account`
+- `/services/account/account`
+- `/services/account/deposit`
+- `/services/account/withdraw`
+- `/services/account/transfer`
+
+[API Documentation](https://documenter.getpostman.com/view/7432727/SW7f1SDP)
 
 ## Authentication Service
 - `/services/auth/register`
-- `/services/auth/login`
-- `/services/auth/logout`
+- `/services/auth/authenticate`
 - `/services/auth/me`
+
+[API Documentation](https://documenter.getpostman.com/view/7432727/SW7f1SDR)
 
 ## Currency Exchange Service
 - `/services/exchange`
-- `/services/exchange?base=<u>THB</u>`
+- `/services/exchange?base=THB`
 
-Remark : sample request and response coming soon
+[API Documentation](https://documenter.getpostman.com/view/7432727/SW7f1SDS)
+
+# Future
+- Integrate with bank API when deposit or withdraw
+- Open API to support merchant mode
+- Progressive Web App on mobile
 
 # Team Member
 
