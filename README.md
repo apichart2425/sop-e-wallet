@@ -5,6 +5,10 @@
 - อัตราแลกเปลี่ยนสกุลเงิน อ้างอิงจาก [https://exchangeratesapi.io/](https://exchangeratesapi.io/) ทุกชั่วโมง
 - สามารถโอนเงินระหว่าง Wallet
 
+# Slide
+
+[Link](https://docs.google.com/presentation/d/1Vwf7F-6Tn4FeINr0CS2T1sQfcZSAekFpHYClc-_rQGU/edit?usp=sharing)
+
 # Architecture
 
 ![Architecture](assets/architecture.png)
